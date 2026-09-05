@@ -37,19 +37,13 @@ export const ContactSection = () => {
                 <div className="w-12 h-12 rounded-full glass-panel flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Mail className="w-5 h-5" />
                 </div>
-                <span className="font-medium">hello@scarlettrose.dev</span>
-              </div>
-              <div className="flex items-center gap-4 text-muted-foreground hover:text-primary transition-colors cursor-pointer group">
-                <div className="w-12 h-12 rounded-full glass-panel flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Phone className="w-5 h-5" />
-                </div>
-                <span className="font-medium">+1 (234) 567-8900</span>
+                <span className="font-medium">workwithprateesh@gmail.com</span>
               </div>
               <div className="flex items-center gap-4 text-muted-foreground hover:text-primary transition-colors cursor-pointer group">
                 <div className="w-12 h-12 rounded-full glass-panel flex items-center justify-center group-hover:scale-110 transition-transform">
                   <MapPin className="w-5 h-5" />
                 </div>
-                <span className="font-medium">San Francisco, CA</span>
+                <span className="font-medium">Bangalore, India</span>
               </div>
             </div>
           </div>
@@ -62,7 +56,7 @@ export const ContactSection = () => {
                 <Input 
                   type="text" 
                   className="rounded-xl py-3 px-4 bg-foreground/5 border-foreground/10 text-foreground focus-visible:ring-primary placeholder:text-muted-foreground/50"
-                  placeholder="John Doe"
+                  placeholder="Kanye West"
                 />
               </div>
               
@@ -71,7 +65,7 @@ export const ContactSection = () => {
                 <Input 
                   type="email" 
                   className="rounded-xl py-3 px-4 bg-foreground/5 border-foreground/10 text-foreground focus-visible:ring-primary placeholder:text-muted-foreground/50"
-                  placeholder="john@example.com"
+                  placeholder="kanye@west.com"
                 />
               </div>
               

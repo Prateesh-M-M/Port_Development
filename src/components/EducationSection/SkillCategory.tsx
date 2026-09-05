@@ -12,24 +12,30 @@ import {
   Lightbulb,
   Users,
   Rocket,
+  Palette,
+  PenTool,
+  Search,
+  Layers,
 } from "lucide-react";
 
 export default function ProfessionalProfile() {
-  const technicalSkills = [
-    { name: "React.js / Next.js", level: 95, icon: Atom, color: "text-cyan-400" },
-    { name: "Node.js / Express", level: 90, icon: Server, color: "text-emerald-400" },
-    { name: "TypeScript & JavaScript", level: 92, icon: Code2, color: "text-blue-400" },
-    { name: "Database (MongoDB / PostgreSQL)", level: 88, icon: Database, color: "text-amber-400" },
-    { name: "Cloud (AWS / Azure)", level: 85, icon: Cloud, color: "text-purple-400" },
+  const technicalSkills = [ 
+    { name: "UI/UX Design", level: 95, icon: Palette, color: "text-cyan-400" }, 
+    { name: "Figma & Prototyping", level: 94, icon: PenTool, color: "text-purple-400" }, 
+    { name: "User Research & Usability Testing", level: 90, icon: Search, color: "text-emerald-400" }, 
+    { name: "Design Systems", level: 88, icon: Layers, color: "text-amber-400" }, 
+    { name: "HTML / CSS / JavaScript", level: 82, icon: Code2, color: "text-blue-400" }, 
+    { name: "AI & HCI", level: 85, icon: Brain, color: "text-rose-400" }, 
   ];
 
-  const softSkills = [
-    { name: "Leadership", icon: Crown, color: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
-    { name: "Problem Solving", icon: Brain, color: "text-purple-400 border-purple-500/30 bg-purple-500/10" },
-    { name: "Agile Methodologies", icon: Workflow, color: "text-sky-400 border-sky-500/30 bg-sky-500/10" },
-    { name: "Mentorship", icon: HeartHandshake, color: "text-rose-400 border-rose-500/30 bg-rose-500/10" },
-    { name: "Strategic Thinking", icon: Lightbulb, color: "text-yellow-400 border-yellow-500/30 bg-yellow-500/10" },
-    { name: "Cross-Team Collaboration", icon: Users, color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
+  const softSkills = [ 
+    { name: "UX Management", icon: Crown, color: "text-amber-400 border-amber-500/30 bg-amber-500/10" }, 
+    { name: "Design Thinking", icon: Lightbulb, color: "text-purple-400 border-purple-500/30 bg-purple-500/10" }, 
+    { name: "Problem Solving", icon: Brain, color: "text-sky-400 border-sky-500/30 bg-sky-500/10" }, 
+    { name: "Stakeholder Collaboration", icon: Users, color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" }, 
+    { name: "Leadership & Mentorship", icon: HeartHandshake, color: "text-rose-400 border-rose-500/30 bg-rose-500/10" }, 
+    { name: "Strategic Thinking", icon: Workflow, color: "text-yellow-400 border-yellow-500/30 bg-yellow-500/10" }, 
+
   ];
 
   return (
@@ -136,10 +142,10 @@ export default function ProfessionalProfile() {
               </div>
               <div>
                 <strong className="text-foreground font-bold text-sm block mb-0.5">
-                  Constant Learner & Tech Pioneer
+                  Curious Designer & Continuous Learner
                 </strong>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Continuously evolving with cutting-edge AI frameworks, distributed architectures, and modern web design systems.
+                  Continously exploring UX, HCI, Accessibility, AI and emerging techonologies to create more meaningful and inclusive digital experiences 
                 </p>
               </div>
             </div>

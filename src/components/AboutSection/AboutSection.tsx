@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import { Code2, Globe2, Layout, Users } from "lucide-react";
 
 const stats = [
-  { icon: <Layout className="w-6 h-6" />, label: "Years Experience", value: "10+" },
-  { icon: <Code2 className="w-6 h-6" />, label: "Projects Completed", value: "150+" },
-  { icon: <Users className="w-6 h-6" />, label: "Happy Clients", value: "50+" },
-  { icon: <Globe2 className="w-6 h-6" />, label: "Global Brands", value: "12" },
+  { icon: <Layout className="w-6 h-6" />, label: "Years Experience", value: "2+" },
+  { icon: <Code2 className="w-6 h-6" />, label: "Projects Completed", value: "10+" },
+  { icon: <Users className="w-6 h-6" />, label: "Happy Clients", value: "15+" },
+  { icon: <Globe2 className="w-6 h-6" />, label: "Certifications", value: "3" },
 ];
 
 export const AboutSection = () => {
@@ -24,10 +24,8 @@ export const AboutSection = () => {
               Passionate about <span className="text-gradient-primary">Digital Excellence</span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              I am a seasoned Full-Stack Developer and UI/UX Designer with over 10 years of experience 
-              delivering high-quality software solutions for global enterprises and startups. My career 
-              blends deep technical expertise with leadership skills, enabling me to design, build, and 
-              lead innovative digital products from concept to launch.
+I’m a UX/UI Designer who combines design thinking, user research and technology to create intuitive and impactful digital experiences. I work across the design process, from understanding user needs and defining problems to crafting interactions, building design systems and refining products through testing.
+My interests lie at the intersection of human-centered design, AI, HCI, accessibility and emerging technology. I enjoy tackling complex problems, exploring new possibilities, and translating ideas into experiences that are both functional and engaging. I believe great design goes beyond aesthetics—it creates meaningful connections between people and technology.
             </p>
           </div>
         </div>

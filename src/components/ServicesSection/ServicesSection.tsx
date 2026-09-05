@@ -5,23 +5,23 @@ import { MagicCard } from "../lightswind/magic-card";
 const services = [
   {
     icon: Code2,
-    title: "Full-Stack Development",
-    description: "End-to-end web applications built with modern frameworks and highly scalable backend architectures.",
+    title: "UI/UX Design",
+    description: "Creating intuitive and engaging digital experiences through user research, wireframing, prototyping and thoughtful interface design.",
   },
   {
     icon: Palette,
-    title: "UI/UX Architecture",
-    description: "Designing intuitive, accessible, and stunning interfaces that prioritize user experience and conversion.",
+    title: "Product Design",
+    description: "Designing user-centered digital products from contcept to final interface, balancing user needs, business goals and brand consistency.",
   },
   {
     icon: Cpu,
-    title: "Performance Optimization",
-    description: "Auditing and supercharging existing codebases for lighting-fast load times and seamless interactions.",
+    title: "AI & Intelligent Interfaces",
+    description: "Exploring AI-Driven experiences and adaptive inerfaces that make digital prodcts more personalized, accessible and intelligent.",
   },
   {
     icon: Layers,
-    title: "Systems Architecture",
-    description: "Designing complex microservices, API integrations, and robust database models for enterprise needs.",
+    title: "Design Systems",
+    description: "Building scalable design systems with reusable components, clear visual standards and consistent experiences across digital products.",
   }
 ];
 
@@ -39,7 +39,7 @@ export const ServicesSection = () => {
           What I Do
         </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-          Delivering comprehensive digital solutions that cover the entire lifecycle of professional product engineering.
+          Designing thoughtful digital experiences that combine user needs, accessibility, visual design, and emerging technology.
         </p>
       </motion.div>
 

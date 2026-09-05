@@ -6,33 +6,32 @@ import { MagicCard } from "../lightswind/magic-card";
 export const EducationSection = () => {
   const education = [
     {
-      degree: "M.Sc. in Computer Science",
-      school: "University of Chennai",
-      year: "2016 – 2018",
-      badge: "IEEE Published Author",
+      degree: "B.Design in User Experience Design",
+      school: "Dayananda Sagar University",
+      year: "2023 – 2027",
+      badge: "User Experience Designer",
       badgeIcon: Award,
       badgeColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
       icon: GraduationCap,
       details: [
-        "Specialized in Software Architecture, Distributed Systems, and AI Applications",
-        "Thesis on Machine Learning for Predictive Analytics & Neural Optimization",
-        "Led enterprise research project on Cloud-Based ERP microservices",
-        "Published 2 peer-reviewed research papers in IEEE international conferences"
+        "Specialized in user Experience design, human-computer interaction and Interaction Design.",
+        "Developed user-centered digital products through research, wireframes, prototyping and usability testing.",
+        "Explored AI, acessibility and emerging technologies to create more inclusive user experiences.",
+        "Worked on academic and real-world projects spanning UI/UX, product design, design systems and interactive experiences."
       ]
     },
     {
-      degree: "B.Sc. in Information Technology",
-      school: "Anna University",
-      year: "2013 – 2016",
-      badge: "Top 5% Honors",
+      degree: "PUC in PCMC",
+      school: "Jain College",
+      year: "2021-2023",
+      badge: "Computer Science Enthusiast",
       badgeIcon: Sparkles,
       badgeColor: "text-primary bg-primary/10 border-primary/30",
       icon: BookOpen,
-      details: [
-        "Gained rigorous foundation in Systems Programming, Networking & DB Management",
-        "Ranked in top 5% across Software Engineering & Algorithms coursework",
-        "Architected campus-wide digital library management system",
-        "Organized and chaired annual technical symposium for 3 consecutive years"
+      details: [ "Built a foundation in Physics, Chemistry, Mathematics, and Computer Science", 
+        "Developed an early understanding of programming and explored how technology can solve real-world problems", 
+        "Experimented with technology and programming, strengthening my curiosity about how people interact with digital systems", 
+        "Developed a growing interest in Human-Computer Interaction, UX, and design" 
       ]
     }
   ];

@@ -51,14 +51,14 @@ export const HeroSection = () => {
             {/* Light Theme: Clean Vibrant Gradient Text */}
             <div className="block dark:hidden">
               <span className="bg-gradient-to-r from-violet-600 via-sky-500 via-purple-600 to-indigo-600 bg-clip-text text-transparent font-extrabold text-[clamp(3rem,6.5vw,5.5rem)] leading-none tracking-tight block pb-2 select-none">
-                Scarlett Rose
+                Prateesh M M
               </span>
             </div>
 
             {/* Dark Theme: Rich Lightswind Aurora Text Effect */}
             <div className="hidden dark:block">
               <AuroraTextEffect
-                text="Scarlett Rose"
+                text="Prateesh M M"
                 fontSize="clamp(3rem, 6.5vw, 5.5rem)"
                 className="bg-transparent overflow-visible p-0 justify-start"
                 textClassName="bg-gradient-to-r from-cyan-400 via-purple-400 to-sky-300 bg-clip-text text-transparent pb-2 font-extrabold"
@@ -72,7 +72,7 @@ export const HeroSection = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.8 }}
           >
-            I build exceptional and accessible digital experiences. Specialized in crafting premium web applications with elegant design systems.
+            I design digital experiences where people, design, and technology come together — from thoughtful interfaces to intelligent and accessible experiences.
           </motion.p>
 
           <motion.div 
@@ -112,8 +112,8 @@ export const HeroSection = () => {
           transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
           <HangingIdCard
-            name="Scarlett Rose"
-            role="Director of Engineering"
+            name="Prateesh M M"
+            role="UI/UX Designer"
             badgeId="SR-89240-PRO"
             accentColor="#8b5cf6"
             ropeLength={75}
@@ -129,8 +129,8 @@ export const HeroSection = () => {
                 {/* Profile Photo with Dual Glowing Ring */}
                 <div className="mt-1 relative w-28 h-28 rounded-full p-1 bg-gradient-to-tr from-cyan-400 via-primary to-purple-400 backdrop-blur-md shadow-2xl border border-white/50 overflow-hidden group">
                   <img 
-                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800" 
-                    alt="Scarlett Rose" 
+                    src="https://cdn.dribbble.com/users/21000923/avatars/normal/33f58c51d210ee81739f701f913d154d.jpeg?1715928035" 
+                    alt="Prateesh M M" 
                     className="w-full h-full object-cover rounded-full filter contrast-105"
                     loading="eager"
                   />
@@ -141,9 +141,9 @@ export const HeroSection = () => {
               {/* Card Body */}
               <div className="p-5 flex flex-col items-center text-center bg-card text-card-foreground flex-1 gap-3">
                 <div>
-                  <h3 className="text-xl font-extrabold tracking-tight text-foreground">Scarlett Rose</h3>
+                  <h3 className="text-xl font-extrabold tracking-tight text-foreground">Prateesh M M</h3>
                   <div className="inline-flex items-center gap-1.5 mt-1 px-3 py-0.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-semibold">
-                    <span>Director of Product Engineering</span>
+                    <span>UI/UX Designer</span>
                   </div>
                 </div>
 
@@ -153,15 +153,15 @@ export const HeroSection = () => {
                 <div className="grid grid-cols-2 gap-2.5 w-full text-left bg-muted/40 p-3 rounded-xl border border-border/50">
                   <div>
                     <span className="text-muted-foreground block text-[9px] uppercase tracking-widest font-bold">Specialty</span>
-                    <span className="font-bold text-foreground text-xs">Full-Stack AI & UX</span>
+                    <span className="font-bold text-foreground text-xs">UX Design</span>
                   </div>
                   <div>
                     <span className="text-muted-foreground block text-[9px] uppercase tracking-widest font-bold">Location</span>
-                    <span className="font-bold text-foreground text-xs">San Francisco, CA</span>
+                    <span className="font-bold text-foreground text-xs">Bangalore, IN</span>
                   </div>
                   <div>
                     <span className="text-muted-foreground block text-[9px] uppercase tracking-widest font-bold">Experience</span>
-                    <span className="font-bold text-foreground text-xs">10+ Years</span>
+                    <span className="font-bold text-foreground text-xs">2+ Years</span>
                   </div>
                   <div>
                     <span className="text-muted-foreground block text-[9px] uppercase tracking-widest font-bold">Status</span>
@@ -190,7 +190,7 @@ export const HeroSection = () => {
                       SR-89240-PRO
                     </span>
                     <span className="text-muted-foreground font-semibold text-[9px] uppercase tracking-wider">
-                      LIGHTSWIND UI
+                      UX Design Specialist
                     </span>
                   </div>
                 </div>

@@ -4,11 +4,11 @@ import { MorphingText } from "../lightswind/morphing-text";
 
 export const Footer = () => {
   const morphingTexts = [
-    "Full-Stack Developer",
-    "UI/UX Architect",
-    "AI Systems Engineer",
-    "Product Builder",
-    "Scarlett Rose",
+    "UX Designer",
+    "UI/UX Developer",
+    "AI & UX Explorer",
+    "HCI Enthusiast",
+    "Prateesh M M",
   ];
 
   const scrollToTop = () => {
@@ -28,7 +28,7 @@ export const Footer = () => {
     { icon: Twitter, href: "#", label: "Twitter" },
     { icon: Github, href: "#", label: "GitHub" },
     { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Mail, href: "mailto:hello@scarlettrose.dev", label: "Email" },
+    { icon: Mail, href: "mailto:workwithprateesh@gmail.com", label: "Email" },
   ];
 
   return (
@@ -44,16 +44,16 @@ export const Footer = () => {
             <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-primary to-sky-400 p-[1px] shadow-lg">
               <div className="w-full h-full bg-background rounded-[11px] flex items-center justify-center">
                 <span className="font-extrabold text-xs tracking-tighter bg-gradient-to-r from-purple-500 to-sky-400 bg-clip-text text-transparent">
-                  SR
+                  PMM
                 </span>
               </div>
             </div>
             <div className="flex flex-col text-left">
               <span className="font-extrabold tracking-tight text-foreground text-base leading-none">
-                Scarlett Rose
+                Prateesh M M
               </span>
               <span className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase mt-0.5">
-                Director of Product Engineering
+                UI/UX Designer
               </span>
             </div>
           </div>
@@ -117,7 +117,7 @@ export const Footer = () => {
 
           {/* Copyright notice */}
           <div className="flex items-center gap-1.5 font-medium text-center md:text-right">
-            <span>© {new Date().getFullYear()} Scarlett Rose. Crafted with</span>
+            <span>© {new Date().getFullYear()} Prateesh M M. Crafted with</span>
             <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 inline-block" />
             <span>& Lightswind UI</span>
           </div>
