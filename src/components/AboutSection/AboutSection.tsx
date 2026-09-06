@@ -24,8 +24,8 @@ export const AboutSection = () => {
               Passionate about <span className="text-gradient-primary">Digital Excellence</span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-I’m a UX/UI Designer who combines design thinking, user research and technology to create intuitive and impactful digital experiences. I work across the design process, from understanding user needs and defining problems to crafting interactions, building design systems and refining products through testing.
-My interests lie at the intersection of human-centered design, AI, HCI, accessibility and emerging technology. I enjoy tackling complex problems, exploring new possibilities, and translating ideas into experiences that are both functional and engaging. I believe great design goes beyond aesthetics—it creates meaningful connections between people and technology.
+              I’m a UX/UI Designer who combines design thinking, user research and technology to create intuitive and impactful digital experiences. I work across the design process, from understanding user needs and defining problems to crafting interactions, building design systems and refining products through testing.
+              My interests lie at the intersection of human-centered design, AI, HCI, accessibility and emerging technology. I enjoy tackling complex problems, exploring new possibilities, and translating ideas into experiences that are both functional and engaging. I believe great design goes beyond aesthetics—it creates meaningful connections between people and technology.
             </p>
           </div>
         </div>

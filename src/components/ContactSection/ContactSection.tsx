@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Send, MapPin, Mail, Phone } from "lucide-react";
+import { Send, MapPin, Mail} from "lucide-react";
 import { Input } from "../lightswind/input";
 import { Textarea } from "../lightswind/textarea";
 import { Button } from "../lightswind/button";

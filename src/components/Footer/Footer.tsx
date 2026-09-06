@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Github, Linkedin, Twitter, Mail, ArrowUp, Heart } from "lucide-react";
+import { Github, Linkedin, Twitter, Mail, ArrowUp, Coffee } from "lucide-react";
 import { MorphingText } from "../lightswind/morphing-text";
 
 export const Footer = () => {
@@ -118,7 +118,7 @@ export const Footer = () => {
           {/* Copyright notice */}
           <div className="flex items-center gap-1.5 font-medium text-center md:text-right">
             <span>© {new Date().getFullYear()} Prateesh M M. Crafted with</span>
-            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 inline-block" />
+            <Coffee className="w-3.5 h-3.5 text-pink-500 fill-pink-500 inline-block" />
             <span>& Lightswind UI</span>
           </div>
         </div>
