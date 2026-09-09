@@ -4,36 +4,44 @@ import { ArrowUpRight } from "lucide-react";
 export const ProjectsSection = () => {
   const projects = [
     {
-      id: 1,
-      title: "AI-Powered Design Platform",
-      subtitle: "Generative assets and automated scaling for e-commerce platforms",
-      link: "#",
-      image: "https://images.pexels.com/photos/8294591/pexels-photo-8294591.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      gridClass: "md:col-span-7 h-[420px]",
+    id: 1,
+    title: "AI-NERGY",
+    subtitle:
+      "An intelligent home energy experience that helps people understand and manage their energy consumption",
+    link: "/projects/ai-energy",
+    image:
+      "https://cdn.dribbble.com/userupload/44336281/file/0333295e0300b04d6e88d5819fde13f1.png?resize=1504x845&vertical=center",
+    gridClass: "md:col-span-7 h-[420px]",
     },
     {
-      id: 2,
-      title: "Global E-Learning",
-      subtitle: "Serving 1.2M+ active students worldwide",
-      link: "#",
-      image: "https://images.pexels.com/photos/15595050/pexels-photo-15595050.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      gridClass: "md:col-span-5 h-[420px]",
+    id: 2,
+    title: "Heuristic Evaluation",
+    subtitle:
+      "A UX evaluation focused on identifying usability issues and improving the overall user experience",
+    link: "/projects/heuristic-evaluation",
+    image:
+      "https://cdn.dribbble.com/userupload/44336424/file/f6ab7185375041658418c5487deaf909.png?resize=2048x1152&vertical=center",
+    gridClass: "md:col-span-5 h-[420px]",
     },
     {
-      id: 3,
-      title: "Modular ERP System",
-      subtitle: "Enterprise logistics & supply chain manufacturing engine",
-      link: "#",
-      image: "https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      gridClass: "md:col-span-5 h-[360px]",
+    id: 3,
+    title: "VidyaVani",
+    subtitle:
+      "An educational experience designed to make learning more accessible and engaging",
+    link: "/projects/vidyavani",
+    image:
+      "https://cdn.dribbble.com/userupload/44337813/file/b3c75bc9740ac039d4c8679162b5b6ba.png?resize=1504x846&vertical=center",
+    gridClass: "md:col-span-5 h-[360px]",
     },
     {
-      id: 4,
-      title: "Fintech Predictive Dashboard",
-      subtitle: "Real-time analytics, algorithmic trading & risk modeling",
-      link: "#",
-      image: "https://images.pexels.com/photos/6169673/pexels-photo-6169673.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      gridClass: "md:col-span-7 h-[360px]",
+    id: 4,
+    title: "Zara Case Study",
+    subtitle:
+      "A UX case study exploring the shopping experience and opportunities for improvement",
+    link: "/projects/zara",
+    image:
+      "https://cdn.dribbble.com/userupload/44341042/file/139d0c290a50e9148fc0d7ec77f39065.jpg?resize=1200x676&vertical=center",
+    gridClass: "md:col-span-7 h-[360px]",
     },
   ];
 

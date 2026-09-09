@@ -72,7 +72,7 @@ export const HeroSection = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.8 }}
           >
-            I design digital experiences where people, design, and technology come together — from thoughtful interfaces to intelligent and accessible experiences.
+            I design digital experiences where people, design and technology come together — from thoughtful interfaces to intelligent and accessible experiences.
           </motion.p>
 
           <motion.div 
