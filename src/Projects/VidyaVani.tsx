@@ -28,6 +28,7 @@ import {
   Palette,
   Route,
   Smartphone,
+  Maximize2,
   X,
   GraduationCap,
   BookOpen,
@@ -38,6 +39,58 @@ import {
 import Header from "../components/Header/Header";
 import CaseStudyNav from "../components/CaseStudyNav/CaseStudyNav";
 import { useLenis } from "lenis/react";
+
+/* =========================================================
+   PROJECT MEDIA
+   Two kinds of entries are supported per tile:
+
+   1. A still image (e.g. a Dribbble shot):
+        { kind: "image", url: "https://cdn.dribbble.com/.../shot.png" }
+      (right-click the shot on Dribbble → "Copy image address" —
+      the page URL alone won't render as an image)
+
+   2. A live, interactive Figma prototype:
+        { kind: "figma", url: "https://www.figma.com/proto/XXXX/Your-File?node-id=..." }
+      (use the "Present" / prototype link from Figma, with link
+      sharing turned on, or the ready-made src from Figma's
+      "Embed" panel — both are supported)
+
+   Leave an entry as `null` to keep the grey placeholder tile.
+========================================================= */
+
+type DesignMediaKind = "image" | "figma";
+
+interface DesignMedia {
+  kind: DesignMediaKind;
+  url: string;
+}
+
+const DESIGN_MEDIA: Record<string, DesignMedia | null> = {
+  overview: null,
+  designProcess: null,
+  qualitativeResearch: null,
+  quantitativeResearchCharts: null,
+  competitorAnalysisMatrix: null,
+  userPersonas: null,
+  empathyMaps: null,
+  moodBoard: null,
+  informationArchitecture: null,
+  userFlow: null,
+  wireframes: null,
+  highFidelity: null,
+};
+
+function toFigmaEmbedUrl(prototypeUrl: string) {
+  // Already a ready-to-use embed URL (e.g. copied straight from Figma's
+  // "Embed" panel) — use it as-is instead of double-wrapping it.
+  if (prototypeUrl.includes("figma.com/embed")) {
+    return prototypeUrl;
+  }
+
+  return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(
+    prototypeUrl
+  )}`;
+}
 
 /* =========================================================
    REUSABLE COMPONENTS
@@ -94,40 +147,107 @@ function SectionHeader({
   );
 }
 
+/**
+ * ImagePlaceholder accepts a `media` entry (see DESIGN_MEDIA above).
+ * Behaviour differs by kind:
+ *  - "image": shown filling the tile; clicking anywhere opens the
+ *    enlarged image in the in-page lightbox.
+ *  - "figma": the live prototype is embedded directly in the tile
+ *    (fully interactive on hover/click); a small "Full screen"
+ *    button opens a larger embed in the lightbox without hijacking
+ *    normal clicks inside the prototype.
+ * With no `media`, it falls back to the original grey placeholder tile.
+ */
 function ImagePlaceholder({
   title,
   height = "h-[420px]",
+  media,
   onClick,
 }: {
   title: string;
   height?: string;
+  media?: DesignMedia | null;
   onClick?: () => void;
 }) {
+  const isImage = media?.kind === "image";
+  const isFigma = media?.kind === "figma";
+
   return (
     <motion.div
       whileHover={{ scale: 1.01 }}
-      onClick={onClick}
-      className={`group relative ${height} cursor-pointer overflow-hidden rounded-3xl border border-border bg-muted/30`}
+      onClick={isImage ? onClick : undefined}
+      role={isImage ? "button" : undefined}
+      aria-label={isImage ? `${title} — click to enlarge` : title}
+      className={`group relative ${height} ${
+        isImage ? "cursor-pointer" : ""
+      } overflow-hidden rounded-3xl border border-border bg-muted/30`}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.15),transparent_40%)]" />
+      {isImage && (
+        <img
+          src={media!.url}
+          alt={title}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      )}
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-background/60 backdrop-blur">
-          <Layers size={22} />
+      {isFigma && (
+        <iframe
+          src={toFigmaEmbedUrl(media!.url)}
+          title={title}
+          allow="fullscreen"
+          className="absolute inset-0 h-full w-full border-0"
+        />
+      )}
+
+      {!media && (
+        <>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.15),transparent_40%)]" />
+
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-background/60 backdrop-blur">
+              <Layers size={22} />
+            </div>
+
+            <span className="text-sm font-medium text-muted-foreground">
+              {title}
+            </span>
+
+            <span className="mt-1 text-xs text-muted-foreground/60">
+              Replace with project image
+            </span>
+          </div>
+        </>
+      )}
+
+      {isImage && (
+        <>
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+
+          <div className="pointer-events-none absolute right-5 top-5 flex items-center gap-1 rounded-full bg-background/70 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+            Click to enlarge
+          </div>
+        </>
+      )}
+
+      {isFigma && (
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onClick?.();
+          }}
+          className="absolute right-5 top-5 z-10 flex items-center gap-1.5 rounded-full bg-background/80 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100"
+        >
+          <Maximize2 size={12} />
+          Full screen
+        </button>
+      )}
+
+      {!media && (
+        <div className="pointer-events-none absolute right-5 top-5 flex items-center gap-1 rounded-full bg-background/70 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+          View
         </div>
-
-        <span className="text-sm font-medium text-muted-foreground">
-          {title}
-        </span>
-
-        <span className="mt-1 text-xs text-muted-foreground/60">
-          Replace with project image
-        </span>
-      </div>
-
-      <div className="absolute right-5 top-5 rounded-full bg-background/70 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
-        View
-      </div>
+      )}
     </motion.div>
   );
 }
@@ -357,7 +477,10 @@ const userFlow = [
 
 export default function VidyaVani() {
   const lenis = useLenis();
-  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<{
+    title: string;
+    media?: DesignMedia | null;
+  } | null>(null);
   const [expandedResearch, setExpandedResearch] = useState<number | null>(null);
   const [showTop, setShowTop] = useState(false);
 
@@ -431,7 +554,13 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="VidyaVani / Project Overview"
                 height="h-[500px]"
-                onClick={() => setLightbox("VidyaVani / Project Overview")}
+                media={DESIGN_MEDIA.overview}
+                onClick={() =>
+                  setLightbox({
+                    title: "VidyaVani / Project Overview",
+                    media: DESIGN_MEDIA.overview,
+                  })
+                }
               />
             </motion.div>
 
@@ -559,7 +688,13 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="VidyaVani Design Thinking Process"
                 height="h-[450px]"
-                onClick={() => setLightbox("VidyaVani Design Thinking Process")}
+                media={DESIGN_MEDIA.designProcess}
+                onClick={() =>
+                  setLightbox({
+                    title: "VidyaVani Design Thinking Process",
+                    media: DESIGN_MEDIA.designProcess,
+                  })
+                }
               />
             </div>
           </div>
@@ -694,7 +829,13 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="VidyaVani Qualitative Research"
                 height="h-[520px]"
-                onClick={() => setLightbox("VidyaVani Qualitative Research")}
+                media={DESIGN_MEDIA.qualitativeResearch}
+                onClick={() =>
+                  setLightbox({
+                    title: "VidyaVani Qualitative Research",
+                    media: DESIGN_MEDIA.qualitativeResearch,
+                  })
+                }
               />
             </div>
           </div>
@@ -739,8 +880,12 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="Quantitative Research — Charts"
                 height="h-[430px]"
+                media={DESIGN_MEDIA.quantitativeResearchCharts}
                 onClick={() =>
-                  setLightbox("Quantitative Research — Charts")
+                  setLightbox({
+                    title: "Quantitative Research — Charts",
+                    media: DESIGN_MEDIA.quantitativeResearchCharts,
+                  })
                 }
               />
 
@@ -851,7 +996,13 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="Competitor Analysis Matrix"
                 height="h-[500px]"
-                onClick={() => setLightbox("Competitor Analysis Matrix")}
+                media={DESIGN_MEDIA.competitorAnalysisMatrix}
+                onClick={() =>
+                  setLightbox({
+                    title: "Competitor Analysis Matrix",
+                    media: DESIGN_MEDIA.competitorAnalysisMatrix,
+                  })
+                }
               />
             </div>
           </div>
@@ -910,7 +1061,13 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="VidyaVani User Personas"
                 height="h-[700px]"
-                onClick={() => setLightbox("VidyaVani User Personas")}
+                media={DESIGN_MEDIA.userPersonas}
+                onClick={() =>
+                  setLightbox({
+                    title: "VidyaVani User Personas",
+                    media: DESIGN_MEDIA.userPersonas,
+                  })
+                }
               />
             </div>
           </div>
@@ -967,7 +1124,13 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="VidyaVani Empathy Maps"
                 height="h-[700px]"
-                onClick={() => setLightbox("VidyaVani Empathy Maps")}
+                media={DESIGN_MEDIA.empathyMaps}
+                onClick={() =>
+                  setLightbox({
+                    title: "VidyaVani Empathy Maps",
+                    media: DESIGN_MEDIA.empathyMaps,
+                  })
+                }
               />
             </div>
           </div>
@@ -1007,7 +1170,13 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="VidyaVani Mood Board"
                 height="h-[600px]"
-                onClick={() => setLightbox("VidyaVani Mood Board")}
+                media={DESIGN_MEDIA.moodBoard}
+                onClick={() =>
+                  setLightbox({
+                    title: "VidyaVani Mood Board",
+                    media: DESIGN_MEDIA.moodBoard,
+                  })
+                }
               />
             </div>
           </div>
@@ -1067,7 +1236,13 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="VidyaVani Information Architecture"
                 height="h-[520px]"
-                onClick={() => setLightbox("VidyaVani Information Architecture")}
+                media={DESIGN_MEDIA.informationArchitecture}
+                onClick={() =>
+                  setLightbox({
+                    title: "VidyaVani Information Architecture",
+                    media: DESIGN_MEDIA.informationArchitecture,
+                  })
+                }
               />
             </div>
           </div>
@@ -1119,7 +1294,13 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="VidyaVani User Flow"
                 height="h-[580px]"
-                onClick={() => setLightbox("VidyaVani User Flow")}
+                media={DESIGN_MEDIA.userFlow}
+                onClick={() =>
+                  setLightbox({
+                    title: "VidyaVani User Flow",
+                    media: DESIGN_MEDIA.userFlow,
+                  })
+                }
               />
             </div>
           </div>
@@ -1161,7 +1342,13 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="VidyaVani Wireframes"
                 height="h-[650px]"
-                onClick={() => setLightbox("VidyaVani Wireframes")}
+                media={DESIGN_MEDIA.wireframes}
+                onClick={() =>
+                  setLightbox({
+                    title: "VidyaVani Wireframes",
+                    media: DESIGN_MEDIA.wireframes,
+                  })
+                }
               />
             </div>
           </div>
@@ -1186,7 +1373,13 @@ export default function VidyaVani() {
               <ImagePlaceholder
                 title="VidyaVani High Fidelity Screens"
                 height="h-[720px]"
-                onClick={() => setLightbox("VidyaVani High Fidelity Screens")}
+                media={DESIGN_MEDIA.highFidelity}
+                onClick={() =>
+                  setLightbox({
+                    title: "VidyaVani High Fidelity Screens",
+                    media: DESIGN_MEDIA.highFidelity,
+                  })
+                }
               />
             </Reveal>
 
@@ -1282,7 +1475,10 @@ export default function VidyaVani() {
       </AnimatePresence>
 
       {/* =====================================================
-          IMAGE LIGHTBOX
+          LIGHTBOX
+          Renders an enlarged image, a bigger interactive Figma
+          embed, or the fallback placeholder — depending on
+          which media kind (if any) that tile has in DESIGN_MEDIA.
       ===================================================== */}
 
       <AnimatePresence>
@@ -1308,19 +1504,38 @@ export default function VidyaVani() {
                 <X size={18} />
               </button>
 
-              <div className="flex h-[70vh] items-center justify-center rounded-3xl border border-border bg-muted/30">
-                <div className="text-center">
-                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
-                    <Layers size={25} />
+              {lightbox.media?.kind === "image" && (
+                <img
+                  src={lightbox.media.url}
+                  alt={lightbox.title}
+                  className="max-h-[85vh] w-full rounded-3xl border border-border object-contain"
+                />
+              )}
+
+              {lightbox.media?.kind === "figma" && (
+                <iframe
+                  src={toFigmaEmbedUrl(lightbox.media.url)}
+                  title={lightbox.title}
+                  allow="fullscreen"
+                  className="h-[85vh] w-full rounded-3xl border border-border"
+                />
+              )}
+
+              {!lightbox.media && (
+                <div className="flex h-[70vh] items-center justify-center rounded-3xl border border-border bg-muted/30">
+                  <div className="text-center">
+                    <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
+                      <Layers size={25} />
+                    </div>
+
+                    <p className="font-medium">{lightbox.title}</p>
+
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Replace this placeholder with your actual project image.
+                    </p>
                   </div>
-
-                  <p className="font-medium">{lightbox}</p>
-
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Replace this placeholder with your actual project image.
-                  </p>
                 </div>
-              </div>
+              )}
             </motion.div>
           </motion.div>
         )}

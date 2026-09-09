@@ -19,12 +19,66 @@ import {
   Layers,
   Search,
   Target,
+  Maximize2,
   X,
 } from "lucide-react";
 
 import Header from "../components/Header/Header";
 import CaseStudyNav from "../components/CaseStudyNav/CaseStudyNav";
 import { useLenis } from "lenis/react";
+
+/* =========================================================
+   PROJECT MEDIA
+   Two kinds of entries are supported per tile:
+
+   1. A still image (e.g. a Dribbble shot):
+        { kind: "image", url: "https://cdn.dribbble.com/.../shot.png" }
+      (right-click the shot on Dribbble → "Copy image address" —
+      the page URL alone won't render as an image)
+
+   2. A live, interactive Figma prototype:
+        { kind: "figma", url: "https://www.figma.com/proto/XXXX/Your-File?node-id=..." }
+      (use the "Present" / prototype link from Figma, with link
+      sharing turned on, or the ready-made src from Figma's
+      "Embed" panel — both are supported)
+
+   Leave an entry as `null` to keep the grey placeholder tile.
+   Each heuristic (01–10) is keyed to match its `number` field
+   below, e.g. DESIGN_MEDIA.heuristic01 for Heuristic 01.
+========================================================= */
+
+type DesignMediaKind = "image" | "figma";
+
+interface DesignMedia {
+  kind: DesignMediaKind;
+  url: string;
+}
+
+const DESIGN_MEDIA: Record<string, DesignMedia | null> = {
+  overview: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336424/file/f6ab7185375041658418c5487deaf909.png?resize=2400x1350&vertical=center" },
+  heuristic01: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336426/file/19a75281ce7a997a8a00af37c609afda.png?resize=2048x2340&vertical=center" },
+  heuristic02: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336427/file/8e1a5c8d1a5c8d1a5c8d1a5c8d1a5c8d.png?resize=2048x2340&vertical=center" },
+  heuristic03: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336428/file/9f2b6d9e2b6d9e2b6d9e2b6d9e2b6d9e.png?resize=2048x2340&vertical=center" },
+  heuristic04: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336429/file/a03c7ea13c7ea13c7ea13c7ea13c7ea1.png?resize=2048x2340&vertical=center" },
+  heuristic05: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336430/file/b14d8fb24d8fb24d8fb24d8fb24d8fb2.png?resize=2048x2340&vertical=center" },
+  heuristic06: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336431/file/c25e9gc35e9gc35e9gc35e9gc35e9gc3.png?resize=2048x2340&vertical=center" },
+  heuristic07: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336432/file/d36f0hd46f0hd46f0hd46f0hd46f0hd4.png?resize=2048x2340&vertical=center" },
+  heuristic08: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336433/file/e47g1ie57g1ie57g1ie57g1ie57g1ie5.png?resize=2048x2340&vertical=center" },
+  heuristic09: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336434/file/f58h2jf68h2jf68h2jf68h2jf68h2jf6.png?resize=2048x2340&vertical=center" },
+  heuristic10: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336435/file/g69i3kg79i3kg79i3kg79i3kg79i3kg7.png?resize=2048x2340&vertical=center" },
+};
+
+function toFigmaEmbedUrl(prototypeUrl: string) {
+  // Already a ready-to-use embed URL (e.g. copied straight from Figma's
+  // "Embed" panel) — use it as-is instead of double-wrapping it.
+  if (prototypeUrl.includes("figma.com/embed")) {
+    return prototypeUrl;
+  }
+
+  return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(
+    prototypeUrl
+  )}`;
+}
 
 /* =========================================================
    REUSABLE COMPONENTS
@@ -81,43 +135,104 @@ function SectionHeader({
   );
 }
 
+/**
+ * ImagePlaceholder accepts a `media` entry (see DESIGN_MEDIA above).
+ * Behaviour differs by kind:
+ *  - "image": shown filling the tile; clicking anywhere opens the
+ *    enlarged image in the in-page lightbox.
+ *  - "figma": the live prototype is embedded directly in the tile
+ *    (fully interactive on hover/click); a small "Full screen"
+ *    button opens a larger embed in the lightbox without hijacking
+ *    normal clicks inside the prototype.
+ * With no `media`, it falls back to the original grey placeholder tile.
+ */
 function ImagePlaceholder({
   title,
   height = "h-[420px]",
+  media,
   onClick,
 }: {
   title: string;
   height?: string;
+  media?: DesignMedia | null;
   onClick?: () => void;
 }) {
+  const isImage = media?.kind === "image";
+  const isFigma = media?.kind === "figma";
+
   return (
     <motion.div
       whileHover={{ scale: 1.01 }}
-      onClick={onClick}
+      onClick={isImage ? onClick : undefined}
+      role={isImage ? "button" : undefined}
+      aria-label={isImage ? `${title} — click to enlarge` : title}
       className={`
         group relative ${height} overflow-hidden rounded-3xl
-        border border-border bg-muted/30 cursor-pointer
+        border border-border bg-muted/30 ${isImage ? "cursor-pointer" : ""}
       `}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.15),transparent_40%)]" />
+      {isImage && (
+        <img
+          src={media!.url}
+          alt={title}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      )}
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-background/60 backdrop-blur">
-          <Layers size={22} />
+      {isFigma && (
+        <iframe
+          src={toFigmaEmbedUrl(media!.url)}
+          title={title}
+          allow="fullscreen"
+          className="absolute inset-0 h-full w-full border-0"
+        />
+      )}
+
+      {!media && (
+        <>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.15),transparent_40%)]" />
+
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-background/60 backdrop-blur">
+              <Layers size={22} />
+            </div>
+
+            <span className="text-sm font-medium text-muted-foreground">
+              {title}
+            </span>
+
+            <span className="mt-1 text-xs text-muted-foreground/60">
+              Replace with project image
+            </span>
+          </div>
+        </>
+      )}
+
+      {isImage && (
+        <div className="pointer-events-none absolute right-5 top-5 flex items-center gap-1 rounded-full bg-background/70 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+          Click to enlarge
         </div>
+      )}
 
-        <span className="text-sm font-medium text-muted-foreground">
-          {title}
-        </span>
+      {isFigma && (
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onClick?.();
+          }}
+          className="absolute right-5 top-5 z-10 flex items-center gap-1.5 rounded-full bg-background/80 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100"
+        >
+          <Maximize2 size={12} />
+          Full screen
+        </button>
+      )}
 
-        <span className="mt-1 text-xs text-muted-foreground/60">
-          Replace with project image
-        </span>
-      </div>
-
-      <div className="absolute right-5 top-5 rounded-full bg-background/70 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
-        View
-      </div>
+      {!media && (
+        <div className="pointer-events-none absolute right-5 top-5 rounded-full bg-background/70 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+          View
+        </div>
+      )}
     </motion.div>
   );
 }
@@ -280,7 +395,10 @@ const heuristics = [
 
 export default function MyntraHeuristicEvaluation() {
   const lenis = useLenis();
-  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<{
+    title: string;
+    media?: DesignMedia | null;
+  } | null>(null);
   const [showTop, setShowTop] = useState(false);
 
   const { scrollYProgress } = useScroll();
@@ -307,6 +425,10 @@ export default function MyntraHeuristicEvaluation() {
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+  };
+
+  const openLightbox = (title: string, media?: DesignMedia | null) => {
+    setLightbox({ title, media });
   };
 
   return (
@@ -355,8 +477,9 @@ export default function MyntraHeuristicEvaluation() {
               <ImagePlaceholder
                 title="Heuristic Evaluation of Myntra"
                 height="h-[500px]"
+                media={DESIGN_MEDIA.overview}
                 onClick={() =>
-                  setLightbox("Heuristic Evaluation of Myntra")
+                  openLightbox("Heuristic Evaluation of Myntra", DESIGN_MEDIA.overview)
                 }
               />
             </motion.div>
@@ -423,72 +546,76 @@ export default function MyntraHeuristicEvaluation() {
             />
 
             <div className="space-y-24">
-              {heuristics.map((heuristic) => (
-                <Reveal key={heuristic.number}>
-                  <article
-                    id={`heuristic-${heuristic.number}`}
-                    className="scroll-mt-32"
-                  >
-                    <div className="mb-8 flex items-end justify-between gap-6">
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
-                          Heuristic {heuristic.number}
-                        </p>
+              {heuristics.map((heuristic) => {
+                const mediaKey = `heuristic${heuristic.number}`;
+                const media = DESIGN_MEDIA[mediaKey];
 
-                        <h3 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">
-                          {heuristic.title}
-                        </h3>
+                return (
+                  <Reveal key={heuristic.number}>
+                    <article
+                      id={`heuristic-${heuristic.number}`}
+                      className="scroll-mt-32"
+                    >
+                      <div className="mb-8 flex items-end justify-between gap-6">
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
+                            Heuristic {heuristic.number}
+                          </p>
+
+                          <h3 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">
+                            {heuristic.title}
+                          </h3>
+                        </div>
+
+                        <span className="hidden text-6xl font-bold text-muted-foreground/10 md:block">
+                          {heuristic.number}
+                        </span>
                       </div>
 
-                      <span className="hidden text-6xl font-bold text-muted-foreground/10 md:block">
-                        {heuristic.number}
-                      </span>
-                    </div>
+                      <div className="grid gap-10 lg:grid-cols-[1.25fr_0.75fr] lg:items-start">
+                        <ImagePlaceholder
+                          title={heuristic.image}
+                          height="h-[420px]"
+                          media={media}
+                          onClick={() => openLightbox(heuristic.image, media)}
+                        />
 
-                    <div className="grid gap-10 lg:grid-cols-[1.25fr_0.75fr] lg:items-start">
-                      <ImagePlaceholder
-                        title={heuristic.image}
-                        height="h-[420px]"
-                        onClick={() =>
-                          setLightbox(heuristic.image)
-                        }
-                      />
+                        <div className="space-y-5">
+                          <div className="rounded-3xl border border-border bg-card/40 p-7">
+                            <h4 className="font-semibold">Observation</h4>
 
-                      <div className="space-y-5">
-                        <div className="rounded-3xl border border-border bg-card/40 p-7">
-                          <h4 className="font-semibold">Observation</h4>
+                            <ul className="mt-5 space-y-3">
+                              {heuristic.observations.map((item) => (
+                                <li
+                                  key={item}
+                                  className="flex gap-3 text-sm leading-relaxed text-muted-foreground"
+                                >
+                                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
 
-                          <ul className="mt-5 space-y-3">
-                            {heuristic.observations.map((item) => (
-                              <li
-                                key={item}
-                                className="flex gap-3 text-sm leading-relaxed text-muted-foreground"
-                              >
-                                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                          <div className="rounded-3xl border border-border p-7">
+                            <h4 className="font-semibold">Issue</h4>
+                            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                              {heuristic.issue}
+                            </p>
+                          </div>
 
-                        <div className="rounded-3xl border border-border p-7">
-                          <h4 className="font-semibold">Issue</h4>
-                          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                            {heuristic.issue}
-                          </p>
-                        </div>
-
-                        <div className="rounded-3xl bg-primary p-7 text-primary-foreground">
-                          <h4 className="font-semibold">Suggestion</h4>
-                          <p className="mt-4 text-sm leading-relaxed opacity-85">
-                            {heuristic.suggestion}
-                          </p>
+                          <div className="rounded-3xl bg-primary p-7 text-primary-foreground">
+                            <h4 className="font-semibold">Suggestion</h4>
+                            <p className="mt-4 text-sm leading-relaxed opacity-85">
+                              {heuristic.suggestion}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </article>
-                </Reveal>
-              ))}
+                    </article>
+                  </Reveal>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -598,7 +725,10 @@ export default function MyntraHeuristicEvaluation() {
       </AnimatePresence>
 
       {/* =====================================================
-          IMAGE LIGHTBOX
+          LIGHTBOX
+          Renders an enlarged image, a bigger interactive Figma
+          embed, or the fallback placeholder — depending on
+          which media kind (if any) that tile has in DESIGN_MEDIA.
       ===================================================== */}
 
       <AnimatePresence>
@@ -624,20 +754,39 @@ export default function MyntraHeuristicEvaluation() {
                 <X size={18} />
               </button>
 
-              <div className="flex h-[70vh] items-center justify-center rounded-3xl border border-border bg-muted/30">
-                <div className="text-center">
-                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
-                    <Layers size={25} />
+              {lightbox.media?.kind === "image" && (
+                <img
+                  src={lightbox.media.url}
+                  alt={lightbox.title}
+                  className="max-h-[85vh] w-full rounded-3xl border border-border object-contain"
+                />
+              )}
+
+              {lightbox.media?.kind === "figma" && (
+                <iframe
+                  src={toFigmaEmbedUrl(lightbox.media.url)}
+                  title={lightbox.title}
+                  allow="fullscreen"
+                  className="h-[85vh] w-full rounded-3xl border border-border"
+                />
+              )}
+
+              {!lightbox.media && (
+                <div className="flex h-[70vh] items-center justify-center rounded-3xl border border-border bg-muted/30">
+                  <div className="text-center">
+                    <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
+                      <Layers size={25} />
+                    </div>
+
+                    <p className="font-medium">{lightbox.title}</p>
+
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Replace this placeholder with the corresponding
+                      evaluation screenshot.
+                    </p>
                   </div>
-
-                  <p className="font-medium">{lightbox}</p>
-
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Replace this placeholder with the corresponding
-                    evaluation screenshot.
-                  </p>
                 </div>
-              </div>
+              )}
             </motion.div>
           </motion.div>
         )}

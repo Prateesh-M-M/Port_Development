@@ -26,12 +26,69 @@ import {
   RefreshCw,
   Sparkles,
   Zap,
+  Maximize2,
   X,
 } from "lucide-react";
 
 import Header from "../components/Header/Header";
 import CaseStudyNav from "../components/CaseStudyNav/CaseStudyNav";
 import { useLenis } from "lenis/react";
+
+/* =========================================================
+   PROJECT MEDIA
+   Two kinds of entries are supported per tile:
+
+   1. A still image (e.g. a Dribbble shot):
+        { kind: "image", url: "https://cdn.dribbble.com/.../shot.png" }
+      (right-click the shot on Dribbble → "Copy image address" —
+      the page URL alone won't render as an image)
+
+   2. A live, interactive Figma prototype:
+        { kind: "figma", url: "https://www.figma.com/proto/XXXX/Your-File?node-id=..." }
+      (use the "Present" / prototype link from Figma, with link
+      sharing turned on, or the ready-made src from Figma's
+      "Embed" panel — both are supported)
+
+   Leave an entry as `null` to keep the grey placeholder tile.
+========================================================= */
+
+type DesignMediaKind = "image" | "figma";
+
+interface DesignMedia {
+  kind: DesignMediaKind;
+  url: string;
+}
+
+const DESIGN_MEDIA: Record<string, DesignMedia | null> = {
+  heroShowcase: null,
+  wireframes: null,
+  loginOriginal: null,
+  loginRedesign: null,
+  homeOriginal: null,
+  homeRedesign: null,
+  searchOriginal: null,
+  searchRedesign: null,
+  searchResultOriginal: null,
+  searchResultRedesign: null,
+  productDetailOriginal: null,
+  productDetailRedesign: null,
+  orderDetailOriginal: null,
+  orderDetailRedesign: null,
+  checkoutOriginal: null,
+  checkoutRedesign: null,
+};
+
+function toFigmaEmbedUrl(prototypeUrl: string) {
+  // Already a ready-to-use embed URL (e.g. copied straight from Figma's
+  // "Embed" panel) — use it as-is instead of double-wrapping it.
+  if (prototypeUrl.includes("figma.com/embed")) {
+    return prototypeUrl;
+  }
+
+  return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(
+    prototypeUrl
+  )}`;
+}
 
 /* =========================================================
    REUSABLE COMPONENTS
@@ -88,40 +145,104 @@ function SectionHeader({
   );
 }
 
+/**
+ * ImagePlaceholder accepts a `media` entry (see DESIGN_MEDIA above).
+ * Behaviour differs by kind:
+ *  - "image": shown filling the tile; clicking anywhere opens the
+ *    enlarged image in the in-page lightbox.
+ *  - "figma": the live prototype is embedded directly in the tile
+ *    (fully interactive on hover/click); a small "Full screen"
+ *    button opens a larger embed in the lightbox without hijacking
+ *    normal clicks inside the prototype.
+ * With no `media`, it falls back to the original grey placeholder tile.
+ */
 function ImagePlaceholder({
   title,
   height = "h-[420px]",
+  media,
   onClick,
 }: {
   title: string;
   height?: string;
+  media?: DesignMedia | null;
   onClick?: () => void;
 }) {
+  const isImage = media?.kind === "image";
+  const isFigma = media?.kind === "figma";
+
   return (
     <motion.div
       whileHover={{ scale: 1.01 }}
-      onClick={onClick}
-      className={`group relative ${height} cursor-pointer overflow-hidden rounded-3xl border border-border bg-muted/30`}
+      onClick={isImage ? onClick : undefined}
+      role={isImage ? "button" : undefined}
+      aria-label={isImage ? `${title} — click to enlarge` : title}
+      className={`
+        group relative ${height} overflow-hidden rounded-3xl
+        border border-border bg-muted/30 ${isImage ? "cursor-pointer" : ""}
+      `}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.15),transparent_40%)]" />
+      {isImage && (
+        <img
+          src={media!.url}
+          alt={title}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      )}
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-background/60 backdrop-blur">
-          <Layers size={22} />
+      {isFigma && (
+        <iframe
+          src={toFigmaEmbedUrl(media!.url)}
+          title={title}
+          allow="fullscreen"
+          className="absolute inset-0 h-full w-full border-0"
+        />
+      )}
+
+      {!media && (
+        <>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.15),transparent_40%)]" />
+
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-background/60 backdrop-blur">
+              <Layers size={22} />
+            </div>
+
+            <span className="text-sm font-medium text-muted-foreground">
+              {title}
+            </span>
+
+            <span className="mt-1 text-xs text-muted-foreground/60">
+              Replace with project image
+            </span>
+          </div>
+        </>
+      )}
+
+      {isImage && (
+        <div className="pointer-events-none absolute right-5 top-5 flex items-center gap-1 rounded-full bg-background/70 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+          Click to enlarge
         </div>
+      )}
 
-        <span className="text-sm font-medium text-muted-foreground">
-          {title}
-        </span>
+      {isFigma && (
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onClick?.();
+          }}
+          className="absolute right-5 top-5 z-10 flex items-center gap-1.5 rounded-full bg-background/80 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100"
+        >
+          <Maximize2 size={12} />
+          Full screen
+        </button>
+      )}
 
-        <span className="mt-1 text-xs text-muted-foreground/60">
-          Replace with project image
-        </span>
-      </div>
-
-      <div className="absolute right-5 top-5 rounded-full bg-background/70 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
-        View
-      </div>
+      {!media && (
+        <div className="pointer-events-none absolute right-5 top-5 rounded-full bg-background/70 px-3 py-1.5 text-xs opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+          View
+        </div>
+      )}
     </motion.div>
   );
 }
@@ -288,18 +409,28 @@ function EmpathyMap({
   );
 }
 
+/**
+ * ComparisonBlock now takes an optional `originalMedia` / `redesignMedia`
+ * entry for each side (see DESIGN_MEDIA above). `onImageClick` is called
+ * with both the tile's title and its media, so the page's lightbox state
+ * can render the correct enlarged image or Figma embed.
+ */
 function ComparisonBlock({
   title,
   original,
   redesign,
+  originalMedia,
+  redesignMedia,
   improvements,
   onImageClick,
 }: {
   title: string;
   original: string;
   redesign: string;
+  originalMedia?: DesignMedia | null;
+  redesignMedia?: DesignMedia | null;
   improvements: { title: string; text: string }[];
-  onImageClick: (label: string) => void;
+  onImageClick: (title: string, media?: DesignMedia | null) => void;
 }) {
   return (
     <Reveal>
@@ -325,7 +456,8 @@ function ComparisonBlock({
             <ImagePlaceholder
               title={original}
               height="h-[360px]"
-              onClick={() => onImageClick(original)}
+              media={originalMedia}
+              onClick={() => onImageClick(original, originalMedia)}
             />
           </div>
 
@@ -339,7 +471,8 @@ function ComparisonBlock({
             <ImagePlaceholder
               title={redesign}
               height="h-[360px]"
-              onClick={() => onImageClick(redesign)}
+              media={redesignMedia}
+              onClick={() => onImageClick(redesign, redesignMedia)}
             />
           </div>
         </div>
@@ -362,7 +495,10 @@ function ComparisonBlock({
 
 export default function ZaraCaseStudy() {
   const lenis = useLenis();
-  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<{
+    title: string;
+    media?: DesignMedia | null;
+  } | null>(null);
   const [expandedResearch, setExpandedResearch] = useState<number | null>(null);
   const [showTop, setShowTop] = useState(false);
 
@@ -385,6 +521,10 @@ export default function ZaraCaseStudy() {
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+  };
+
+  const openLightbox = (title: string, media?: DesignMedia | null) => {
+    setLightbox({ title, media });
   };
 
   const researchQuestions = [
@@ -572,7 +712,13 @@ export default function ZaraCaseStudy() {
               <ImagePlaceholder
                 title="ZARA Website Redesign — Hero / Final Showcase"
                 height="h-[560px]"
-                onClick={() => setLightbox("ZARA Website Redesign — Hero / Final Showcase")}
+                media={DESIGN_MEDIA.heroShowcase}
+                onClick={() =>
+                  openLightbox(
+                    "ZARA Website Redesign — Hero / Final Showcase",
+                    DESIGN_MEDIA.heroShowcase
+                  )
+                }
               />
             </motion.div>
 
@@ -1014,7 +1160,10 @@ export default function ZaraCaseStudy() {
                 <ImagePlaceholder
                   title="ZARA Mid-Fidelity Wireframes"
                   height="h-[420px]"
-                  onClick={() => setLightbox("ZARA Mid-Fidelity Wireframes")}
+                  media={DESIGN_MEDIA.wireframes}
+                  onClick={() =>
+                    openLightbox("ZARA Mid-Fidelity Wireframes", DESIGN_MEDIA.wireframes)
+                  }
                 />
               </div>
             </Reveal>
@@ -1053,7 +1202,9 @@ export default function ZaraCaseStudy() {
                 title="Login Page"
                 original="Original Login Page"
                 redesign="Login Page Redesign"
-                onImageClick={setLightbox}
+                originalMedia={DESIGN_MEDIA.loginOriginal}
+                redesignMedia={DESIGN_MEDIA.loginRedesign}
+                onImageClick={openLightbox}
                 improvements={[
                   { title: "Negative Spacing", text: "The real estate of the website has been used more judiciously in the redesign." },
                   { title: "CTA Buttons", text: "The redesign ensures people can differentiate between CTAs." },
@@ -1065,7 +1216,9 @@ export default function ZaraCaseStudy() {
                 title="Home Page"
                 original="Original Home Page"
                 redesign="Home Page Redesign"
-                onImageClick={setLightbox}
+                originalMedia={DESIGN_MEDIA.homeOriginal}
+                redesignMedia={DESIGN_MEDIA.homeRedesign}
+                onImageClick={openLightbox}
                 improvements={[
                   { title: "Logo Scale", text: "The ZARA logo was resized to a more appropriate and balanced size so it remains legible without dominating the page." },
                   { title: "Contrast", text: "The redesign follows consistency and a visual theme aligned with ZARA campaigns." },
@@ -1077,7 +1230,9 @@ export default function ZaraCaseStudy() {
                 title="Search Page"
                 original="Original Search Page"
                 redesign="Search Page Redesign"
-                onImageClick={setLightbox}
+                originalMedia={DESIGN_MEDIA.searchOriginal}
+                redesignMedia={DESIGN_MEDIA.searchRedesign}
+                onImageClick={openLightbox}
                 improvements={[
                   { title: "Readability", text: "Legibility is enhanced so the content on the search page is easier to understand." },
                   { title: "Organization", text: "Product content and the gist of its details are organized and aligned in a more appealing way." },
@@ -1089,7 +1244,9 @@ export default function ZaraCaseStudy() {
                 title="Search Result Page"
                 original="Original Search Result Page"
                 redesign="Search Result Page Redesign"
-                onImageClick={setLightbox}
+                originalMedia={DESIGN_MEDIA.searchResultOriginal}
+                redesignMedia={DESIGN_MEDIA.searchResultRedesign}
+                onImageClick={openLightbox}
                 improvements={[
                   { title: "Clarity", text: "Product information is presented with more clarity and avoids misleading customers." },
                   { title: "Filters", text: "More filters are provided to make finding the desired product easier." },
@@ -1101,7 +1258,9 @@ export default function ZaraCaseStudy() {
                 title="Product Detail Page"
                 original="Original Product Detail Page"
                 redesign="Product Detail Page Redesign"
-                onImageClick={setLightbox}
+                originalMedia={DESIGN_MEDIA.productDetailOriginal}
+                redesignMedia={DESIGN_MEDIA.productDetailRedesign}
+                onImageClick={openLightbox}
                 improvements={[
                   { title: "Text Formatting", text: "Product details follow a clearer visual hierarchy according to the content on the page." },
                   { title: "Colour & Size", text: "Colour and size options are mentioned clearly in the product details section." },
@@ -1113,7 +1272,9 @@ export default function ZaraCaseStudy() {
                 title="Order Detail Page"
                 original="Original Order Detail Page"
                 redesign="Order Detail Page Redesign"
-                onImageClick={setLightbox}
+                originalMedia={DESIGN_MEDIA.orderDetailOriginal}
+                redesignMedia={DESIGN_MEDIA.orderDetailRedesign}
+                onImageClick={openLightbox}
                 improvements={[
                   { title: "Organization", text: "Content is organized to avoid alignment that would be overwhelming for users." },
                   { title: "Icon Functionality", text: "A single minus icon is used to avoid confusion and clarify its function." },
@@ -1125,7 +1286,9 @@ export default function ZaraCaseStudy() {
                 title="Checkout & Payment"
                 original="Original Checkout and Payment Page"
                 redesign="Checkout and Payment Redesign"
-                onImageClick={setLightbox}
+                originalMedia={DESIGN_MEDIA.checkoutOriginal}
+                redesignMedia={DESIGN_MEDIA.checkoutRedesign}
+                onImageClick={openLightbox}
                 improvements={[
                   { title: "Wisely Used Real Estate", text: "Website space is used more sensibly to make checkout and payment easier." },
                   { title: "Alignment & Placement", text: "Content is positioned more judiciously to make the process faster and more efficient." },
@@ -1237,7 +1400,10 @@ export default function ZaraCaseStudy() {
       </AnimatePresence>
 
       {/* =====================================================
-          IMAGE LIGHTBOX
+          LIGHTBOX
+          Renders an enlarged image, a bigger interactive Figma
+          embed, or the fallback placeholder — depending on
+          which media kind (if any) that tile has in DESIGN_MEDIA.
       ===================================================== */}
       <AnimatePresence>
         {lightbox && (
@@ -1263,17 +1429,36 @@ export default function ZaraCaseStudy() {
                 <X size={18} />
               </button>
 
-              <div className="flex h-[70vh] items-center justify-center rounded-3xl border border-border bg-muted/30">
-                <div className="text-center">
-                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
-                    <Layers size={25} />
+              {lightbox.media?.kind === "image" && (
+                <img
+                  src={lightbox.media.url}
+                  alt={lightbox.title}
+                  className="max-h-[85vh] w-full rounded-3xl border border-border object-contain"
+                />
+              )}
+
+              {lightbox.media?.kind === "figma" && (
+                <iframe
+                  src={toFigmaEmbedUrl(lightbox.media.url)}
+                  title={lightbox.title}
+                  allow="fullscreen"
+                  className="h-[85vh] w-full rounded-3xl border border-border"
+                />
+              )}
+
+              {!lightbox.media && (
+                <div className="flex h-[70vh] items-center justify-center rounded-3xl border border-border bg-muted/30">
+                  <div className="text-center">
+                    <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
+                      <Layers size={25} />
+                    </div>
+                    <p className="font-medium">{lightbox.title}</p>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Replace this placeholder with the corresponding ZARA case-study image.
+                    </p>
                   </div>
-                  <p className="font-medium">{lightbox}</p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Replace this placeholder with the corresponding ZARA case-study image.
-                  </p>
                 </div>
-              </div>
+              )}
             </motion.div>
           </motion.div>
         )}

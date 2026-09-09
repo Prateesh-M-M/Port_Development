@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 
-@theme {
+:root {
   --font-sans: var(--font-geist-sans);
 }
 

@@ -11,6 +11,7 @@ import { CareerTimeline } from "./components/CareerSection/CareerTimeline";
 import { ContactSection } from "./components/ContactSection/ContactSection";
 import { Footer } from "./components/Footer/Footer";
 import WhatIBringSection from "./components/WhatIBringSection/WhatIBringSection";
+import BackgroundParticles from "./components/BackgroundParticles/BackgroundParticles";
 
 import ReactLenis, { useLenis } from "lenis/react";
 
@@ -354,6 +355,10 @@ function App() {
           duration: 1.2,
         }}
       >
+
+        {/* Bouncing background shapes/emojis — behind everything, on every route */}
+
+        <BackgroundParticles />
 
         {/* Global Cursor */}
 
