@@ -57,15 +57,15 @@ interface DesignMedia {
 const DESIGN_MEDIA: Record<string, DesignMedia | null> = {
   overview: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336424/file/f6ab7185375041658418c5487deaf909.png?resize=2400x1350&vertical=center" },
   heuristic01: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336426/file/19a75281ce7a997a8a00af37c609afda.png?resize=2048x2340&vertical=center" },
-  heuristic02: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336427/file/8e1a5c8d1a5c8d1a5c8d1a5c8d1a5c8d.png?resize=2048x2340&vertical=center" },
-  heuristic03: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336428/file/9f2b6d9e2b6d9e2b6d9e2b6d9e2b6d9e.png?resize=2048x2340&vertical=center" },
-  heuristic04: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336429/file/a03c7ea13c7ea13c7ea13c7ea13c7ea1.png?resize=2048x2340&vertical=center" },
-  heuristic05: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336430/file/b14d8fb24d8fb24d8fb24d8fb24d8fb2.png?resize=2048x2340&vertical=center" },
-  heuristic06: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336431/file/c25e9gc35e9gc35e9gc35e9gc35e9gc3.png?resize=2048x2340&vertical=center" },
-  heuristic07: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336432/file/d36f0hd46f0hd46f0hd46f0hd46f0hd4.png?resize=2048x2340&vertical=center" },
-  heuristic08: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336433/file/e47g1ie57g1ie57g1ie57g1ie57g1ie5.png?resize=2048x2340&vertical=center" },
-  heuristic09: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336434/file/f58h2jf68h2jf68h2jf68h2jf68h2jf6.png?resize=2048x2340&vertical=center" },
-  heuristic10: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336435/file/g69i3kg79i3kg79i3kg79i3kg79i3kg7.png?resize=2048x2340&vertical=center" },
+  heuristic02: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972848/file/83799d90d76066e83aa124a84f1af25a.png?resize=2048x1222&vertical=center" },
+  heuristic03: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972846/file/4e824422dc7b32c80e010f0f51c229dc.png?resize=2048x1275&vertical=center" },
+  heuristic04: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972850/file/d23588c978a486a0d58e8e355ab1c5a1.png?resize=2400x1695&vertical=center" },
+  heuristic05: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972845/file/84dd5fa73a47b1af9759547b5dc819dd.png?resize=3810x2396&vertical=center" },
+  heuristic06: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972849/file/3d7ae53dc0899b73cbe2257eb5e346ac.png?resize=2048x1451&vertical=center" },
+  heuristic07: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972851/file/d6d80ce1f0ca59fbcba93cf083d784f3.png?resize=2048x1607&vertical=center" },
+  heuristic08: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972844/file/c1486255eea412d785536bf268f7caa0.png?resize=1920x1524&vertical=center" },
+  heuristic09: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972842/file/0e6ce6d845b3859b911bce34c0706bcf.png?resize=2048x1262&vertical=center" },
+  heuristic10: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972843/file/98b48c0eb54a4963a68c4d5caf6153b0.png?resize=1920x1526&vertical=center" },
 };
 
 function toFigmaEmbedUrl(prototypeUrl: string) {

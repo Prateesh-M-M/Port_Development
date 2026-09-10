@@ -66,18 +66,18 @@ interface DesignMedia {
 }
 
 const DESIGN_MEDIA: Record<string, DesignMedia | null> = {
-  overview: null,
-  designProcess: null,
-  qualitativeResearch: null,
-  quantitativeResearchCharts: null,
-  competitorAnalysisMatrix: null,
-  userPersonas: null,
-  empathyMaps: null,
-  moodBoard: null,
-  informationArchitecture: null,
-  userFlow: null,
-  wireframes: null,
-  highFidelity: null,
+  overview: { kind: "image", url: "https://cdn.dribbble.com/userupload/44337813/file/b3c75bc9740ac039d4c8679162b5b6ba.png?resize=1920x1080&vertical=center" },
+  designProcess: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972882/file/e923a12a2239f08ec77a4184a4537ab4.png?resize=2048x639&vertical=center" },
+  qualitativeResearch: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972888/file/db6d397def96ee1d6df4ba25c1b5e112.png?resize=1684x1447&vertical=center" },
+  quantitativeResearchCharts: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972890/file/9df5124fb1afe442befe089b08472b5c.png?resize=1684x1371&vertical=center" },
+  competitorAnalysisMatrix: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972891/file/35cb4dfefacccbb0a38b1e693ace099c.png?resize=1684x1277&vertical=center" },
+  userPersonas: { kind: "image", url: "https://cdn.dribbble.com/userupload/44337821/file/c8e81bc486123ac796db736bbe94db7d.png?resize=850x1700&vertical=center" },
+  empathyMaps: { kind: "image", url: "https://cdn.dribbble.com/userupload/44337816/file/b46211240e30a414279242ff406ed413.png?resize=850x1701&vertical=center" },
+  moodBoard: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972887/file/70ba15bca248b1d408e51ddd33039c5f.png?resize=2048x1695&vertical=center" },
+  informationArchitecture: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972889/file/a6bea0dfbb5dbe0d4f0b3ab142ec0e65.png?resize=1684x1302&vertical=center" },
+  userFlow: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972886/file/b33734f247833981ad821eec0b47901c.png?resize=1684x1068&vertical=center" },
+  wireframes: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972884/file/fa3631077a62f35354e659e2a589f7d9.png?resize=1600x1714&vertical=center" },
+  highFidelity: { kind: "figma", url: "https://embed.figma.com/proto/Lhc9tcLNUz424VQJhFrlEV/Vidya-vani-Sem-4?node-id=835-10735&scaling=min-zoom&content-scaling=fixed&page-id=389%3A5347&starting-point-node-id=835%3A10683&embed-host=share" },
 };
 
 function toFigmaEmbedUrl(prototypeUrl: string) {

@@ -89,9 +89,6 @@ const DESIGN_MEDIA: Record<string, DesignMedia | null> = {
   },
   empathyMaps: {
     kind: "image",
-    // NOTE: your message had two different URLs bundled as a markdown
-    // link — using the link target here. Swap this if it's not the
-    // one you meant.
     url: "https://cdn.dribbble.com/userupload/44336288/file/cb904ad963eebc776b6f3a526e95ffcc.png?resize=975x1600&vertical=center",
   },
   moodBoard: {
