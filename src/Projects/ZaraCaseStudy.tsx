@@ -60,22 +60,22 @@ interface DesignMedia {
 }
 
 const DESIGN_MEDIA: Record<string, DesignMedia | null> = {
-  heroShowcase: null,
-  wireframes: null,
-  loginOriginal: null,
-  loginRedesign: null,
-  homeOriginal: null,
-  homeRedesign: null,
-  searchOriginal: null,
-  searchRedesign: null,
-  searchResultOriginal: null,
-  searchResultRedesign: null,
-  productDetailOriginal: null,
-  productDetailRedesign: null,
-  orderDetailOriginal: null,
-  orderDetailRedesign: null,
-  checkoutOriginal: null,
-  checkoutRedesign: null,
+  heroShowcase: { kind: "image", url: "https://cdn.dribbble.com/userupload/44341042/file/139d0c290a50e9148fc0d7ec77f39065.jpg?resize=1200x676&vertical=center" },
+  wireframes: { kind: "image", url: "https://cdn.dribbble.com/userupload/44341051/file/cd3ecf95b121635896e0de37eb6f319f.jpg?resize=1263x1413&vertical=center" },
+  loginOriginal: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973342/file/f5fb61817bb21872bf6eb94816a2985d.jpg?resize=1263x350&vertical=center"},
+  loginRedesign: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973343/file/968a5913a8275812ba7d88c8b478ce22.jpg?resize=1263x538&vertical=center"},
+  homeOriginal: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973347/file/64051914b07bf46e1afe42391508c0a3.jpg?resize=2048x592&vertical=center"},
+  homeRedesign: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973344/file/09526777cb7e0a7c1ef3bc1c7d6a514b.jpg?resize=1190x866&vertical=center"},
+  searchOriginal: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973337/file/9cf4d2d3db9b901e01ba138416ed3222.jpg?resize=1190x343&vertical=center"},
+  searchRedesign: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973345/file/b5c4f62f5cbd0408cedf3b11838fc204.jpg?resize=1190x867&vertical=center"},
+  searchResultOriginal: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973337/file/9cf4d2d3db9b901e01ba138416ed3222.jpg?resize=2048x590&vertical=center"},
+  searchResultRedesign: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973345/file/b5c4f62f5cbd0408cedf3b11838fc204.jpg?resize=2048x1492&vertical=center"},
+  productDetailOriginal: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973435/file/b0a1fe94ec2f74f80fa00801cc210243.jpg?resize=2048x520&vertical=center"},
+  productDetailRedesign: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973436/file/482724c8c043389fd73c833d295a1285.jpg?resize=2048x1436&vertical=center"},
+  orderDetailOriginal: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973334/file/356aceaf0bd2722ae2bc97ffba5b50c8.jpg?resize=2048x517&vertical=center"},
+  orderDetailRedesign: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973339/file/76d1a49241c778d0a2783a50161a040d.jpg?resize=2048x1449&vertical=center"},
+  checkoutOriginal: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973336/file/a6fe60c724db0cffd3194cd3f8430a4c.jpg?resize=2048x599&vertical=center"},
+  checkoutRedesign: {kind: "image", url: "https://cdn.dribbble.com/userupload/48973338/file/c575061e9ca3169ed87de01cf87648a5.jpg?resize=2048x1549&vertical=center"},
 };
 
 function toFigmaEmbedUrl(prototypeUrl: string) {
