@@ -4,8 +4,6 @@ A personal portfolio website showcasing my work in UX/UI design, interaction des
 
 The portfolio focuses on documenting the design process behind each project, from understanding the problem and conducting research to ideation, prototyping, testing, and final outcomes.
 
-**Live Portfolio:** https://prateeshs-portfolio.vercel.app/
-
 **Designer:** Prateesh M M
 **Location:** Bengaluru, Karnataka, India
 **Field:** UX/UI Design, Interaction Design, HCI
@@ -363,8 +361,6 @@ Planned improvements may include:
 ## Contact
 
 For collaborations, internships, freelance opportunities, or design-related discussions:
-
-**Portfolio:** https://prateeshs-portfolio.vercel.app/
 
 **LinkedIn:** https://linkedin.com/in/prateesh-m-m-2147b0302
 
