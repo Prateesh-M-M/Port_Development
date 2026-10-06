@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import { fileURLToPath } from "url";
+import { localApi } from "./vite-plugin-local-api";
 // Remove this if you don't need overlay
 import { vitePluginErrorOverlay } from "@hiogawa/vite-plugin-error-overlay";
 
@@ -18,6 +19,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     tailwindcss(),
+    localApi(),
     mode === "development" ? vitePluginErrorOverlay() : null,
   ].filter(Boolean),
   resolve: {

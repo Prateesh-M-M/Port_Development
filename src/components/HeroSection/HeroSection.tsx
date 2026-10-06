@@ -6,8 +6,35 @@ import { Badge } from "../lightswind/badge";
 import { HangingIdCard } from "../lightswind/HangingIdCard";
 import { AuroraTextEffect } from "../lightswind/aurora-text-effect";
 import { DotPattern } from "../lightswind/dot-pattern";
+import { useLenis } from "lenis/react";
+
+const RESUME_PATH = "/Prateesh_Resume.pdf";
+const RESUME_FILENAME = "Prateesh_Resume.pdf"; // name the visitor gets when it downloads
+
+const handleResumeDownload = () => {
+  const link = document.createElement("a");
+  link.href = RESUME_PATH;
+  link.download = RESUME_FILENAME;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+};
 
 export const HeroSection = () => {
+
+  const lenis = useLenis();
+
+    const scrollToProjects = () => {
+      const element = document.getElementById("projects");
+      if (!element) return;
+
+      if (lenis) {
+        lenis.scrollTo(element, { offset: -100 });
+      } else {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    };
+
   return (
     <section id="hero" className="relative min-h-[100vh] flex flex-col pt-12 md:pt-16 overflow-hidden bg-background">
       {/* Background Dot Pattern with Radial Vignette Shade */}
@@ -81,10 +108,19 @@ export const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            <Button size="lg" className="rounded-full px-7 h-12 bg-primary text-primary-foreground font-semibold flex items-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:-translate-y-1">
-              View Work <ArrowRight className="w-4 h-4" />
+            <Button
+              size="lg"
+              onClick={scrollToProjects}
+              className="rounded-full px-7 h-12 bg-primary text-primary-foreground font-semibold flex items-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:-translate-y-1"
+            >              
+            View Work <ArrowRight className="w-4 h-4" />
             </Button>
-            <Button size="lg" variant="outline" className="rounded-full px-7 h-12 glass-panel text-foreground font-semibold flex items-center gap-2 hover:bg-foreground/10 transition-all hover:-translate-y-1 border-foreground/10">
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={handleResumeDownload}
+              className="rounded-full px-7 h-12 glass-panel text-foreground font-semibold flex items-center gap-2 hover:bg-foreground/10 transition-all hover:-translate-y-1 border-foreground/10"
+            >
               Resume <Download className="w-4 h-4" />
             </Button>
           </motion.div>
