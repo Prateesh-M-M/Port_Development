@@ -737,7 +737,7 @@ export default function ZaraCaseStudy() {
         {/* ===================================================
             01 — EMPATHIZE
         =================================================== */}
-        <section id="overview" className="scroll-mt-32 px-6 py-32">
+        <section id="overview" data-case-section="Empathize" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
               number="01"
@@ -934,7 +934,7 @@ export default function ZaraCaseStudy() {
         {/* ===================================================
             02 — DEFINE
         =================================================== */}
-        <section id="problem" className="scroll-mt-32 border-t border-border px-6 py-32">
+        <section id="problem" data-case-section="Define" className="scroll-mt-32 border-t border-border px-6 py-32">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
               number="02"
@@ -1055,7 +1055,7 @@ export default function ZaraCaseStudy() {
         {/* ===================================================
             03 — IDEATE
         =================================================== */}
-        <section id="ideation" className="scroll-mt-32 border-t border-border px-6 py-32">
+        <section id="ideation" data-case-section="Ideate" className="scroll-mt-32 border-t border-border px-6 py-32">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
               number="03"
@@ -1173,7 +1173,7 @@ export default function ZaraCaseStudy() {
         {/* ===================================================
             04 — DESIGN
         =================================================== */}
-        <section id="ui-design" className="scroll-mt-32 border-t border-border px-6 py-32 pb-48">
+        <section id="ui-design" data-case-section="Design" className="scroll-mt-32 border-t border-border px-6 py-32 pb-48">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
               number="04"

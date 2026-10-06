@@ -502,6 +502,7 @@ export default function MyntraHeuristicEvaluation() {
 
         <section
           id="overview"
+          data-case-section="Overview"
           className="scroll-mt-32 px-6 py-32"
         >
           <div className="mx-auto max-w-7xl">
@@ -536,6 +537,7 @@ export default function MyntraHeuristicEvaluation() {
 
         <section
           id="heuristics"
+          data-case-section="Heuristic Evaluation"
           className="scroll-mt-32 border-t border-border px-6 py-32"
         >
           <div className="mx-auto max-w-7xl">
@@ -626,6 +628,7 @@ export default function MyntraHeuristicEvaluation() {
 
         <section
           id="takeaways"
+          data-case-section="Key Takeaways"
           className="scroll-mt-32 border-t border-border px-6 py-32 pb-48"
         >
           <div className="mx-auto max-w-7xl">

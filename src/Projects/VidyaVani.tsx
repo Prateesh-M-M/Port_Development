@@ -580,7 +580,7 @@ export default function VidyaVani() {
             INTRODUCTION
         =================================================== */}
 
-        <section id="introduction" className="scroll-mt-32 px-6 py-32">
+        <section id="introduction" data-case-section="Introduction" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
               number="01"
@@ -613,6 +613,7 @@ export default function VidyaVani() {
 
         <section
           id="problem-statement"
+          data-case-section="Problem Statement"
           className="scroll-mt-32 border-t border-border px-6 py-32"
         >
           <div className="mx-auto max-w-7xl">
@@ -655,7 +656,7 @@ export default function VidyaVani() {
             DESIGN THINKING
         =================================================== */}
 
-        <section id="design-thinking" className="scroll-mt-32 px-6 py-32">
+        <section id="design-thinking" data-case-section="Design Thinking" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
               number="03"
@@ -706,6 +707,7 @@ export default function VidyaVani() {
 
         <section
           id="project-timeline"
+          data-case-section="Timeline"
           className="scroll-mt-32 border-t border-border px-6 py-32"
         >
           <div className="mx-auto max-w-7xl">
@@ -752,7 +754,7 @@ export default function VidyaVani() {
             QUALITATIVE RESEARCH
         =================================================== */}
 
-        <section id="qualitative-research" className="scroll-mt-32 px-6 py-32">
+        <section id="qualitative-research" data-case-section="Qualitative Research" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
               number="05"
@@ -847,6 +849,7 @@ export default function VidyaVani() {
 
         <section
           id="quantitative-research"
+          data-case-section="Quantitative Research"
           className="scroll-mt-32 border-t border-border px-6 py-32"
         >
           <div className="mx-auto max-w-7xl">
@@ -910,7 +913,7 @@ export default function VidyaVani() {
             COMPETITOR COMPARISON
         =================================================== */}
 
-        <section id="competitor-comparison" className="scroll-mt-32 px-6 py-32">
+        <section id="competitor-comparison" data-case-section="Competitor Comparison" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
               number="07"
@@ -966,6 +969,7 @@ export default function VidyaVani() {
 
         <section
           id="competitor-analysis"
+          data-case-section="Competitor Analysis"
           className="scroll-mt-32 border-t border-border px-6 py-32"
         >
           <div className="mx-auto max-w-7xl">
@@ -1012,7 +1016,7 @@ export default function VidyaVani() {
             USER PERSONAS
         =================================================== */}
 
-        <section id="user-personas" className="scroll-mt-32 px-6 py-32">
+        <section id="user-personas" data-case-section="User Personas" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
               number="09"
@@ -1079,6 +1083,7 @@ export default function VidyaVani() {
 
         <section
           id="empathy-maps"
+          data-case-section="Empathy Maps"
           className="scroll-mt-32 border-t border-border px-6 py-32"
         >
           <div className="mx-auto max-w-7xl">
@@ -1140,7 +1145,7 @@ export default function VidyaVani() {
             MOOD BOARD
         =================================================== */}
 
-        <section id="mood-board" className="scroll-mt-32 px-6 py-32">
+        <section id="mood-board" data-case-section="Mood Board" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
               number="11"
@@ -1188,6 +1193,7 @@ export default function VidyaVani() {
 
         <section
           id="information-architecture"
+          data-case-section="Information Architecture"
           className="scroll-mt-32 border-t border-border px-6 py-32"
         >
           <div className="mx-auto max-w-7xl">
@@ -1252,7 +1258,7 @@ export default function VidyaVani() {
             USER FLOW
         =================================================== */}
 
-        <section id="user-flow" className="scroll-mt-32 px-6 py-32">
+        <section id="user-flow" data-case-section="User Flow" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
               number="13"
@@ -1312,6 +1318,7 @@ export default function VidyaVani() {
 
         <section
           id="wireframes"
+          data-case-section="Wireframes"
           className="scroll-mt-32 border-t border-border px-6 py-32"
         >
           <div className="mx-auto max-w-7xl">
@@ -1360,6 +1367,7 @@ export default function VidyaVani() {
 
         <section
           id="high-fidelity"
+          data-case-section="High Fidelity"
           className="scroll-mt-32 px-6 py-32 pb-48"
         >
           <div className="mx-auto max-w-7xl">
