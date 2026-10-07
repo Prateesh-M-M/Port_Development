@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { ArrowRight, Download, Github, Linkedin, Mail, Dribbble,  } from "lucide-react";
 import TechStackSection from "../TechStackSection/TechStackSection";
 import { Button } from "../lightswind/button";
 import { Badge } from "../lightswind/badge";
@@ -126,14 +126,42 @@ export const HeroSection = () => {
           </motion.div>
 
           {/* Social Links */}
-          <motion.div 
+          <motion.div
             className="flex items-center gap-5 justify-center md:justify-start w-full md:w-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.8 }}
           >
-            {[Twitter, Github, Linkedin, Mail].map((Icon, i) => (
-              <a key={i} href="#" className="text-muted-foreground hover:text-foreground transition-colors hover:-translate-y-1 transform duration-200">
+            {[
+              {
+                icon: Github,
+                href: "https://github.com/Prateesh-M-M",
+                label: "GitHub",
+              },
+              {
+                icon: Linkedin,
+                href: "https://linkedin.com/in/prateesh-m-m-2147b0302",
+                label: "LinkedIn",
+              },
+              {
+                icon: Mail,
+                href: "mailto:workwithprateesh@gmail.com",
+                label: "Email",
+              },
+              {
+                icon: Dribbble,
+                href: "https://dribbble.com/prateesh_m_m",
+                label: "Dribbble",
+              },
+            ].map(({ icon: Icon, href, label }) => (
+              <a
+                key={label}
+                href={href}
+                aria-label={label}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                className="text-muted-foreground hover:text-foreground transition-colors hover:-translate-y-1 transform duration-200"
+              >
                 <Icon className="w-5 h-5" />
               </a>
             ))}
