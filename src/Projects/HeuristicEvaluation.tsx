@@ -1,8 +1,4 @@
-import {
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { useState, type ReactNode } from "react";
 
 import {
   motion,
@@ -13,7 +9,6 @@ import {
 
 import {
   ArrowDown,
-  ArrowUp,
   ArrowUpRight,
   Check,
   Layers,
@@ -25,27 +20,18 @@ import {
 
 import Header from "../components/Header/Header";
 import CaseStudyNav from "../components/CaseStudyNav/CaseStudyNav";
-import { useLenis } from "lenis/react";
 
-/* =========================================================
-   PROJECT MEDIA
-   Two kinds of entries are supported per tile:
+/* PROJECT MEDIA
 
    1. A still image (e.g. a Dribbble shot):
         { kind: "image", url: "https://cdn.dribbble.com/.../shot.png" }
       (right-click the shot on Dribbble → "Copy image address" —
       the page URL alone won't render as an image)
 
-   2. A live, interactive Figma prototype:
-        { kind: "figma", url: "https://www.figma.com/proto/XXXX/Your-File?node-id=..." }
-      (use the "Present" / prototype link from Figma, with link
-      sharing turned on, or the ready-made src from Figma's
-      "Embed" panel — both are supported)
-
    Leave an entry as `null` to keep the grey placeholder tile.
    Each heuristic (01–10) is keyed to match its `number` field
    below, e.g. DESIGN_MEDIA.heuristic01 for Heuristic 01.
-========================================================= */
+ */
 
 type DesignMediaKind = "image" | "figma";
 
@@ -56,7 +42,7 @@ interface DesignMedia {
 
 const DESIGN_MEDIA: Record<string, DesignMedia | null> = {
   overview: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336424/file/f6ab7185375041658418c5487deaf909.png?resize=2400x1350&vertical=center" },
-  heuristic01: { kind: "image", url: "https://cdn.dribbble.com/userupload/44336426/file/19a75281ce7a997a8a00af37c609afda.png?resize=2048x2340&vertical=center" },
+  heuristic01: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972847/file/9473f528f930a9475cefb948ddc76eed.png?resize=3810x2046&vertical=center" },
   heuristic02: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972848/file/83799d90d76066e83aa124a84f1af25a.png?resize=2048x1222&vertical=center" },
   heuristic03: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972846/file/4e824422dc7b32c80e010f0f51c229dc.png?resize=2048x1275&vertical=center" },
   heuristic04: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972850/file/d23588c978a486a0d58e8e355ab1c5a1.png?resize=2400x1695&vertical=center" },
@@ -69,20 +55,26 @@ const DESIGN_MEDIA: Record<string, DesignMedia | null> = {
 };
 
 function toFigmaEmbedUrl(prototypeUrl: string) {
-  // Already a ready-to-use embed URL (e.g. copied straight from Figma's
-  // "Embed" panel) — use it as-is instead of double-wrapping it.
-  if (prototypeUrl.includes("figma.com/embed")) {
-    return prototypeUrl;
+  try {
+    const url = new URL(prototypeUrl);
+
+    if (url.hostname === "embed.figma.com") {
+      return url.toString();
+    }
+
+    if (url.hostname.endsWith("figma.com")) {
+      url.hostname = "embed.figma.com";
+      url.searchParams.set("embed-host", "share");
+      return url.toString();
+    }
+  } catch {
+    // fall through
   }
 
-  return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(
-    prototypeUrl
-  )}`;
+  return prototypeUrl;
 }
 
-/* =========================================================
-   REUSABLE COMPONENTS
-========================================================= */
+/* REUSABLE COMPONENTS */
 
 function Reveal({
   children,
@@ -135,17 +127,7 @@ function SectionHeader({
   );
 }
 
-/**
- * ImagePlaceholder accepts a `media` entry (see DESIGN_MEDIA above).
- * Behaviour differs by kind:
- *  - "image": shown filling the tile; clicking anywhere opens the
- *    enlarged image in the in-page lightbox.
- *  - "figma": the live prototype is embedded directly in the tile
- *    (fully interactive on hover/click); a small "Full screen"
- *    button opens a larger embed in the lightbox without hijacking
- *    normal clicks inside the prototype.
- * With no `media`, it falls back to the original grey placeholder tile.
- */
+
 function ImagePlaceholder({
   title,
   height = "h-[420px]",
@@ -272,9 +254,7 @@ function Tag({ children }: { children: ReactNode }) {
   );
 }
 
-/* =========================================================
-   HEURISTIC DATA
-========================================================= */
+/* Heuristic data */
 
 const heuristics = [
   {
@@ -389,17 +369,13 @@ const heuristics = [
   },
 ];
 
-/* =========================================================
-   PAGE
-========================================================= */
+/* Page */
 
 export default function MyntraHeuristicEvaluation() {
-  const lenis = useLenis();
   const [lightbox, setLightbox] = useState<{
     title: string;
     media?: DesignMedia | null;
   } | null>(null);
-  const [showTop, setShowTop] = useState(false);
 
   const { scrollYProgress } = useScroll();
 
@@ -408,24 +384,6 @@ export default function MyntraHeuristicEvaluation() {
     damping: 30,
     restDelta: 0.001,
   });
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowTop(window.scrollY > 1000);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    if (lenis) {
-      lenis.scrollTo(0);
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
 
   const openLightbox = (title: string, media?: DesignMedia | null) => {
     setLightbox({ title, media });
@@ -441,9 +399,7 @@ export default function MyntraHeuristicEvaluation() {
       />
 
       <main>
-        {/* ===================================================
-            HERO
-        =================================================== */}
+        {/* Hero */}
 
         <section className="relative overflow-hidden px-6 pb-24 pt-40">
           <div className="pointer-events-none absolute left-1/2 top-20 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
@@ -496,9 +452,7 @@ export default function MyntraHeuristicEvaluation() {
 
         <CaseStudyNav />
 
-        {/* ===================================================
-            OVERVIEW
-        =================================================== */}
+        {/* Overview */}
 
         <section
           id="overview"
@@ -531,9 +485,7 @@ export default function MyntraHeuristicEvaluation() {
           </div>
         </section>
 
-        {/* ===================================================
-            HEURISTIC EVALUATION
-        =================================================== */}
+        {/* Heuristic Evaluation */}
 
         <section
           id="heuristics"
@@ -622,9 +574,7 @@ export default function MyntraHeuristicEvaluation() {
           </div>
         </section>
 
-        {/* ===================================================
-            KEY TAKEAWAYS
-        =================================================== */}
+        {/* KEY TAKEAWAYS */}
 
         <section
           id="takeaways"
@@ -708,31 +658,6 @@ export default function MyntraHeuristicEvaluation() {
           </div>
         </section>
       </main>
-
-      {/* =====================================================
-          BACK TO TOP
-      ===================================================== */}
-
-      <AnimatePresence>
-        {showTop && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background/80 shadow-xl backdrop-blur transition hover:bg-muted"
-          >
-            <ArrowUp size={18} />
-          </motion.button>
-        )}
-      </AnimatePresence>
-
-      {/* =====================================================
-          LIGHTBOX
-          Renders an enlarged image, a bigger interactive Figma
-          embed, or the fallback placeholder — depending on
-          which media kind (if any) that tile has in DESIGN_MEDIA.
-      ===================================================== */}
 
       <AnimatePresence>
         {lightbox && (

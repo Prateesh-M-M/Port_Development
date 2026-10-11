@@ -1,8 +1,4 @@
-import {
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { useState, type ReactNode } from "react";
 
 import {
   motion,
@@ -13,7 +9,6 @@ import {
 
 import {
   ArrowDown,
-  ArrowUp,
   ArrowUpRight,
   ChevronDown,
   ChevronUp,
@@ -35,9 +30,8 @@ import {
 
 import Header from "../components/Header/Header";
 import CaseStudyNav from "../components/CaseStudyNav/CaseStudyNav";
-import { useLenis } from "lenis/react";
 
-/* =========================================================
+/* 
    PROJECT MEDIA
    Two kinds of entries are supported per tile:
 
@@ -47,13 +41,12 @@ import { useLenis } from "lenis/react";
       the page URL alone won't render as an image)
 
    2. A live, interactive Figma prototype:
-        { kind: "figma", url: "https://www.figma.com/proto/XXXX/Your-File?node-id=..." }
-      (use the "Present" / prototype link from Figma, with link
-      sharing turned on — it's embedded in an iframe so it stays
-      interactive right on the page)
+        { kind: "figma", url: "https://embed.figma.com/proto/..." }
+      (paste the `src` value from Figma's "Embed" panel, or a normal
+      figma.com/proto link — both work. Link sharing must be turned on.)
 
    Leave an entry as `null` to keep the grey placeholder tile.
-========================================================= */
+ */
 
 type DesignMediaKind = "image" | "figma";
 
@@ -105,25 +98,31 @@ const DESIGN_MEDIA: Record<string, DesignMedia | null> = {
   },
   highFidelity: {
     kind: "figma",
-    url: "https://embed.figma.com/proto/fRXXGT4AYZ79sLY6diSmwc/Mini-Project-4-AInergy?node-id=471-23544&scaling=scale-down&content-scaling=fixed&page-id=377%3A22725&starting-point-node-id=471%3A23540&embed-host=share",
+    url: "https://embed.figma.com/proto/fRXXGT4AYZ79sLY6diSmwc/Mini-Project-4-AInergy?node-id=75-382&scaling=scale-down&content-scaling=fixed&page-id=75%3A234&starting-point-node-id=75%3A376&show-proto-sidebar=1&embed-host=share",
   },
 };
 
 function toFigmaEmbedUrl(prototypeUrl: string) {
-  // Already a ready-to-use embed URL (e.g. copied straight from Figma's
-  // "Embed" panel) — use it as-is instead of double-wrapping it.
-  if (prototypeUrl.includes("figma.com/embed")) {
-    return prototypeUrl;
+  try {
+    const url = new URL(prototypeUrl);
+
+    if (url.hostname === "embed.figma.com") {
+      return url.toString();
+    }
+
+    if (url.hostname.endsWith("figma.com")) {
+      url.hostname = "embed.figma.com";
+      url.searchParams.set("embed-host", "share");
+      return url.toString();
+    }
+  } catch {
+    // fall through
   }
 
-  return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(
-    prototypeUrl
-  )}`;
+  return prototypeUrl;
 }
 
-/* =========================================================
-   REUSABLE COMPONENTS
-========================================================= */
+/* REUSABLE COMPONENTS */
 
 function Reveal({
   children,
@@ -176,18 +175,6 @@ function SectionHeader({
   );
 }
 
-/**
- * ImagePlaceholder now accepts a `media` entry (see DESIGN_MEDIA
- * above). Behaviour differs by kind:
- *  - "image": shown filling the tile; clicking anywhere opens
- *    the enlarged image in the in-page lightbox.
- *  - "figma": the live prototype is embedded directly in the
- *    tile (fully interactive on hover/click); a small "Full
- *    screen" button opens a larger embed in the lightbox
- *    without hijacking normal clicks inside the prototype.
- * With no `media`, it falls back to the original grey
- * placeholder tile.
- */
 function ImagePlaceholder({
   title,
   height = "h-[420px]",
@@ -204,7 +191,7 @@ function ImagePlaceholder({
 
   return (
     <motion.div
-      whileHover={{ scale: 1.01 }}
+      whileHover={isFigma ? undefined : { scale: 1.01 }}
       onClick={isImage ? onClick : undefined}
       role={isImage ? "button" : undefined}
       aria-label={isImage ? `${title} — click to enlarge` : title}
@@ -225,6 +212,7 @@ function ImagePlaceholder({
           src={toFigmaEmbedUrl(media!.url)}
           title={title}
           allow="fullscreen"
+          allowFullScreen
           className="absolute inset-0 h-full w-full border-0"
         />
       )}
@@ -317,10 +305,7 @@ function Tag({ children }: { children: ReactNode }) {
   );
 }
 
-/* =========================================================
-   CASE STUDY DATA
-   Content is structured from the supplied AI-NERGY board.
-========================================================= */
+/* CASE STUDY DATA, Content is structured from the supplied AI-NERGY board. */
 
 const designProcess = [
   ["01", "Research", "Understand the problem, users, habits and existing energy products."],
@@ -471,12 +456,9 @@ const moodBoard = [
   "Minimal",
 ];
 
-/* =========================================================
-   PAGE
-========================================================= */
+/* PAGE */
 
 export default function AINergy() {
-  const lenis = useLenis();
   const [lightbox, setLightbox] = useState<{
     title: string;
     media?: DesignMedia | null;
@@ -484,7 +466,6 @@ export default function AINergy() {
     null
   );
   const [expandedResearch, setExpandedResearch] = useState<number | null>(null);
-  const [showTop, setShowTop] = useState(false);
 
   const { scrollYProgress } = useScroll();
 
@@ -493,22 +474,6 @@ export default function AINergy() {
     damping: 30,
     restDelta: 0.001,
   });
-
-  useEffect(() => {
-    const handleScroll = () => setShowTop(window.scrollY > 1000);
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    if (lenis) {
-      lenis.scrollTo(0);
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -520,9 +485,7 @@ export default function AINergy() {
       />
 
       <main>
-        {/* ===================================================
-            HERO
-        =================================================== */}
+        {/* HERO */}
 
         <section className="relative overflow-hidden px-6 pb-24 pt-40">
           <div className="pointer-events-none absolute left-1/2 top-20 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
@@ -575,9 +538,7 @@ export default function AINergy() {
 
         <CaseStudyNav />
 
-        {/* ===================================================
-            INTRODUCTION
-        =================================================== */}
+        {/* INTRODUCTION */}
 
         <section id="introduction" data-case-section="Introduction" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -606,9 +567,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            PROBLEM STATEMENT
-        =================================================== */}
+        {/* PROBLEM STATEMENT */}
 
         <section
           id="problem-statement"
@@ -650,9 +609,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            DESIGN THINKING PROCESS
-        =================================================== */}
+        {/* DESIGN THINKING PROCESS */}
 
         <section id="design-process" data-case-section="Design Thinking" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -694,9 +651,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            PROJECT TIMELINE
-        =================================================== */}
+        {/* PROJECT TIMELINE */}
 
         <section
           id="project-timeline"
@@ -748,9 +703,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            QUALITATIVE RESEARCH
-        =================================================== */}
+        {/* QUALITATIVE RESEARCH */}
 
         <section id="qualitative-research" data-case-section="Qualitative Research" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -836,9 +789,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            QUANTITATIVE RESEARCH
-        =================================================== */}
+        {/* QUANTITATIVE RESEARCH */}
 
         <section
           id="quantitative-research"
@@ -900,9 +851,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            COMPETITOR COMPARISON
-        =================================================== */}
+        {/* COMPETITOR COMPARISON */}
 
         <section id="competitor-comparison" data-case-section="Competitor Comparison" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -948,9 +897,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            COMPETITOR ANALYSIS
-        =================================================== */}
+        {/* COMPETITOR ANALYSIS */}
 
         <section
           id="competitor-analysis"
@@ -992,9 +939,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            USER PERSONAS
-        =================================================== */}
+        {/* USER PERSONAS */}
 
         <section id="user-personas" data-case-section="User Personas" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -1052,9 +997,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            EMPATHY MAPS
-        =================================================== */}
+        {/* EMPATHY MAPS */}
 
         <section
           id="empathy-maps"
@@ -1110,9 +1053,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            MOOD BOARD
-        =================================================== */}
+        {/* MOOD BOARD */}
 
         <section id="mood-board" data-case-section="Mood Board" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -1152,9 +1093,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            INFORMATION ARCHITECTURE
-        =================================================== */}
+        {/* INFORMATION ARCHITECTURE */}
 
         <section
           id="information-architecture"
@@ -1214,9 +1153,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            USER FLOW
-        =================================================== */}
+        {/* USER FLOW */}
 
         <section id="user-flow" data-case-section="User Flow" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -1270,9 +1207,7 @@ export default function AINergy() {
           </div>
         </section>
 
-        {/* ===================================================
-            HIGH FIDELITY
-        =================================================== */}
+        {/* HIGH FIDELITY */}
 
         <section
           id="high-fidelity"
@@ -1370,31 +1305,6 @@ export default function AINergy() {
         </section>
       </main>
 
-      {/* =====================================================
-          BACK TO TOP
-      ===================================================== */}
-
-      <AnimatePresence>
-        {showTop && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background/80 shadow-xl backdrop-blur transition hover:bg-muted"
-          >
-            <ArrowUp size={18} />
-          </motion.button>
-        )}
-      </AnimatePresence>
-
-      {/* =====================================================
-          LIGHTBOX
-          Renders an enlarged image, a bigger interactive Figma
-          embed, or the fallback placeholder — depending on
-          which media kind (if any) that tile has in DESIGN_MEDIA.
-      ===================================================== */}
-
       <AnimatePresence>
         {lightbox && (
           <motion.div
@@ -1431,6 +1341,7 @@ export default function AINergy() {
                   src={toFigmaEmbedUrl(lightbox.media.url)}
                   title={lightbox.title}
                   allow="fullscreen"
+                  allowFullScreen
                   className="h-[85vh] w-full rounded-3xl border border-border"
                 />
               )}

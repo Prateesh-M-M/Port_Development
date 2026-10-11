@@ -1,8 +1,4 @@
-import {
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { useState, type ReactNode } from "react";
 
 import {
   motion,
@@ -13,7 +9,6 @@ import {
 
 import {
   ArrowDown,
-  ArrowUp,
   ArrowUpRight,
   ChevronDown,
   ChevronUp,
@@ -38,9 +33,8 @@ import {
 
 import Header from "../components/Header/Header";
 import CaseStudyNav from "../components/CaseStudyNav/CaseStudyNav";
-import { useLenis } from "lenis/react";
 
-/* =========================================================
+/* 
    PROJECT MEDIA
    Two kinds of entries are supported per tile:
 
@@ -56,7 +50,7 @@ import { useLenis } from "lenis/react";
       "Embed" panel — both are supported)
 
    Leave an entry as `null` to keep the grey placeholder tile.
-========================================================= */
+ */
 
 type DesignMediaKind = "image" | "figma";
 
@@ -77,24 +71,30 @@ const DESIGN_MEDIA: Record<string, DesignMedia | null> = {
   informationArchitecture: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972889/file/a6bea0dfbb5dbe0d4f0b3ab142ec0e65.png?resize=1684x1302&vertical=center" },
   userFlow: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972886/file/b33734f247833981ad821eec0b47901c.png?resize=1684x1068&vertical=center" },
   wireframes: { kind: "image", url: "https://cdn.dribbble.com/userupload/48972884/file/fa3631077a62f35354e659e2a589f7d9.png?resize=1600x1714&vertical=center" },
-  highFidelity: { kind: "figma", url: "https://embed.figma.com/proto/Lhc9tcLNUz424VQJhFrlEV/Vidya-vani-Sem-4?node-id=835-10735&scaling=min-zoom&content-scaling=fixed&page-id=389%3A5347&starting-point-node-id=835%3A10683&embed-host=share" },
+  highFidelity: {kind: "figma", url: "https://embed.figma.com/proto/Lhc9tcLNUz424VQJhFrlEV/Vidya-vani-Sem-4?node-id=835-10735&scaling=scale-down&content-scaling=fixed&page-id=389%3A5347&starting-point-node-id=835%3A10683&embed-host=share"},
 };
 
 function toFigmaEmbedUrl(prototypeUrl: string) {
-  // Already a ready-to-use embed URL (e.g. copied straight from Figma's
-  // "Embed" panel) — use it as-is instead of double-wrapping it.
-  if (prototypeUrl.includes("figma.com/embed")) {
-    return prototypeUrl;
+  try {
+    const url = new URL(prototypeUrl);
+
+    if (url.hostname === "embed.figma.com") {
+      return url.toString();
+    }
+
+    if (url.hostname.endsWith("figma.com")) {
+      url.hostname = "embed.figma.com";
+      url.searchParams.set("embed-host", "share");
+      return url.toString();
+    }
+  } catch {
+    // fall through
   }
 
-  return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(
-    prototypeUrl
-  )}`;
+  return prototypeUrl;
 }
 
-/* =========================================================
-   REUSABLE COMPONENTS
-========================================================= */
+/* REUSABLE COMPONENTS */
 
 function Reveal({
   children,
@@ -147,17 +147,6 @@ function SectionHeader({
   );
 }
 
-/**
- * ImagePlaceholder accepts a `media` entry (see DESIGN_MEDIA above).
- * Behaviour differs by kind:
- *  - "image": shown filling the tile; clicking anywhere opens the
- *    enlarged image in the in-page lightbox.
- *  - "figma": the live prototype is embedded directly in the tile
- *    (fully interactive on hover/click); a small "Full screen"
- *    button opens a larger embed in the lightbox without hijacking
- *    normal clicks inside the prototype.
- * With no `media`, it falls back to the original grey placeholder tile.
- */
 function ImagePlaceholder({
   title,
   height = "h-[420px]",
@@ -286,16 +275,6 @@ function Tag({ children }: { children: ReactNode }) {
     </span>
   );
 }
-
-/* =========================================================
-   VIDYAVANI CASE STUDY DATA
-
-   Structured from the supplied VidyaVani case-study board:
-   Introduction → Problem Statement → Design Thinking →
-   Project Timeline → Research → Competitor Analysis →
-   Personas → Empathy Maps → Mood Board → IA →
-   User Flow → Wireframes → High Fidelity
-========================================================= */
 
 const designProcess = [
   ["01", "Discover", "Understand the educational context, users and existing learning behaviour."],
@@ -471,18 +450,14 @@ const userFlow = [
   ["06", "Continue or explore"],
 ];
 
-/* =========================================================
-   PAGE
-========================================================= */
+/* PAGE */
 
 export default function VidyaVani() {
-  const lenis = useLenis();
   const [lightbox, setLightbox] = useState<{
     title: string;
     media?: DesignMedia | null;
   } | null>(null);
   const [expandedResearch, setExpandedResearch] = useState<number | null>(null);
-  const [showTop, setShowTop] = useState(false);
 
   const { scrollYProgress } = useScroll();
 
@@ -491,22 +466,6 @@ export default function VidyaVani() {
     damping: 30,
     restDelta: 0.001,
   });
-
-  useEffect(() => {
-    const handleScroll = () => setShowTop(window.scrollY > 1000);
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    if (lenis) {
-      lenis.scrollTo(0);
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -518,9 +477,7 @@ export default function VidyaVani() {
       />
 
       <main>
-        {/* ===================================================
-            HERO
-        =================================================== */}
+        {/* HERO */}
 
         <section className="relative overflow-hidden px-6 pb-24 pt-40">
           <div className="pointer-events-none absolute left-1/2 top-20 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
@@ -576,9 +533,7 @@ export default function VidyaVani() {
 
         <CaseStudyNav />
 
-        {/* ===================================================
-            INTRODUCTION
-        =================================================== */}
+        {/* INTRODUCTION */}
 
         <section id="introduction" data-case-section="Introduction" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -607,9 +562,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            PROBLEM STATEMENT
-        =================================================== */}
+        {/* PROBLEM STATEMENT */}
 
         <section
           id="problem-statement"
@@ -652,9 +605,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            DESIGN THINKING
-        =================================================== */}
+        {/* DESIGN THINKING */}
 
         <section id="design-thinking" data-case-section="Design Thinking" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -701,9 +652,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            PROJECT TIMELINE
-        =================================================== */}
+        {/* PROJECT TIMELINE */}
 
         <section
           id="project-timeline"
@@ -750,9 +699,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            QUALITATIVE RESEARCH
-        =================================================== */}
+        {/* QUALITATIVE RESEARCH */}
 
         <section id="qualitative-research" data-case-section="Qualitative Research" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -843,9 +790,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            QUANTITATIVE RESEARCH
-        =================================================== */}
+        {/* QUANTITATIVE RESEARCH */}
 
         <section
           id="quantitative-research"
@@ -909,9 +854,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            COMPETITOR COMPARISON
-        =================================================== */}
+        {/* COMPETITOR COMPARISON */}
 
         <section id="competitor-comparison" data-case-section="Competitor Comparison" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -963,9 +906,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            COMPETITOR ANALYSIS
-        =================================================== */}
+        {/* COMPETITOR ANALYSIS */}
 
         <section
           id="competitor-analysis"
@@ -1012,9 +953,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            USER PERSONAS
-        =================================================== */}
+        {/* USER PERSONAS */}
 
         <section id="user-personas" data-case-section="User Personas" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -1077,9 +1016,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            EMPATHY MAPS
-        =================================================== */}
+        {/* EMPATHY MAPS */}
 
         <section
           id="empathy-maps"
@@ -1141,9 +1078,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            MOOD BOARD
-        =================================================== */}
+        {/* MOOD BOARD */}
 
         <section id="mood-board" data-case-section="Mood Board" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -1187,9 +1122,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            INFORMATION ARCHITECTURE
-        =================================================== */}
+        {/* INFORMATION ARCHITECTURE */}
 
         <section
           id="information-architecture"
@@ -1254,9 +1187,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            USER FLOW
-        =================================================== */}
+        {/* USER FLOW */}
 
         <section id="user-flow" data-case-section="User Flow" className="scroll-mt-32 px-6 py-32">
           <div className="mx-auto max-w-7xl">
@@ -1312,9 +1243,7 @@ export default function VidyaVani() {
           </div>
         </section>
 
-        {/* ===================================================
-            WIREFRAMES
-        =================================================== */}
+        {/* WIREFRAMES */}
 
         <section
           id="wireframes"
@@ -1463,24 +1392,6 @@ export default function VidyaVani() {
           </div>
         </section>
       </main>
-
-      {/* =====================================================
-          BACK TO TOP
-      ===================================================== */}
-
-      <AnimatePresence>
-        {showTop && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background/80 shadow-xl backdrop-blur transition hover:bg-muted"
-          >
-            <ArrowUp size={18} />
-          </motion.button>
-        )}
-      </AnimatePresence>
 
       {/* =====================================================
           LIGHTBOX

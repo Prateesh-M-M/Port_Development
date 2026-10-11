@@ -13,7 +13,6 @@ import {
 
 import {
   ArrowDown,
-  ArrowUp,
   ArrowUpRight,
   ChevronDown,
   ChevronUp,
@@ -39,7 +38,6 @@ import {
 
 import Header from "../components/Header/Header";
 import CaseStudyNav from "../components/CaseStudyNav/CaseStudyNav";
-import { useLenis } from "lenis/react";
 
 /* PROJECT MEDIA (Dribbble URLs or /image/ files from public/) */
 
@@ -432,13 +430,11 @@ const scripts = [
 /* PAGE */
 
 export default function PlanetPirate() {
-  const lenis = useLenis();
   const [lightbox, setLightbox] = useState<{
     title: string;
     url: string | null;
   } | null>(null);
   const [expandedScript, setExpandedScript] = useState<number | null>(0);
-  const [showTop, setShowTop] = useState(false);
 
   const { scrollYProgress } = useScroll();
 
@@ -447,22 +443,6 @@ export default function PlanetPirate() {
     damping: 30,
     restDelta: 0.001,
   });
-
-  useEffect(() => {
-    const handleScroll = () => setShowTop(window.scrollY > 1000);
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    if (lenis) {
-      lenis.scrollTo(0);
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
 
   const openLightbox = (title: string, key: string) =>
     setLightbox({ title, url: media(key) });
@@ -1048,22 +1028,6 @@ export default function PlanetPirate() {
           </div>
         </section>
       </main>
-
-      {/* BACK TO TOP */}
-
-      <AnimatePresence>
-        {showTop && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background/80 shadow-xl backdrop-blur transition hover:bg-muted"
-          >
-            <ArrowUp size={18} />
-          </motion.button>
-        )}
-      </AnimatePresence>
 
       {/* LIGHTBOX */}
 

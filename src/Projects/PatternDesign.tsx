@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 import {
   motion,
@@ -7,10 +7,9 @@ import {
   useSpring,
 } from "framer-motion";
 
-import { ArrowDown, ArrowUp, Layers, X } from "lucide-react";
+import { ArrowDown, Layers, X } from "lucide-react";
 
 import Header from "../components/Header/Header";
-import { useLenis } from "lenis/react";
 
 /* PROJECT MEDIA  (images only) */
 
@@ -117,12 +116,10 @@ function Tag({ children }: { children: ReactNode }) {
 /* PAGE */
 
 export default function GeometricPatternDesign() {
-  const lenis = useLenis();
   const [lightbox, setLightbox] = useState<{
     title: string;
     src: string | null;
   } | null>(null);
-  const [showTop, setShowTop] = useState(false);
 
   const { scrollYProgress } = useScroll();
 
@@ -131,22 +128,6 @@ export default function GeometricPatternDesign() {
     damping: 30,
     restDelta: 0.001,
   });
-
-  useEffect(() => {
-    const handleScroll = () => setShowTop(window.scrollY > 1000);
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    if (lenis) {
-      lenis.scrollTo(0);
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
 
   const open = (title: string, src: string | null) =>
     setLightbox({ title, src });
@@ -260,22 +241,6 @@ export default function GeometricPatternDesign() {
           </div>
         </section>
       </main>
-
-      {/* BACK TO TOP */}
-
-      <AnimatePresence>
-        {showTop && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background/80 shadow-xl backdrop-blur transition hover:bg-muted"
-          >
-            <ArrowUp size={18} />
-          </motion.button>
-        )}
-      </AnimatePresence>
 
       {/* LIGHTBOX */}
 
