@@ -5,7 +5,7 @@ A personal portfolio website showcasing my work in UX/UI design, interaction des
 The portfolio focuses on documenting the design process behind each project, from understanding the problem and conducting research to ideation, prototyping, testing, and final outcomes.
 
 **Designer:** Prateesh M M
-**Location:** Bengaluru, Karnataka, India
+**Location:** India
 **Field:** UX/UI Design, Interaction Design, HCI
 
 ---

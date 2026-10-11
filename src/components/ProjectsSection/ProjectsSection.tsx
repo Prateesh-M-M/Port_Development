@@ -34,9 +34,7 @@ export const ProjectsSection = () => {
   ];
 
   const projects: Project[] = [
-    // ============================================================
     // CASE STUDIES
-    // ============================================================
 
     {
       id: 1,
@@ -86,78 +84,83 @@ export const ProjectsSection = () => {
       gridClass: "md:col-span-7 h-[360px]",
     },
 
-    // ============================================================
     // GRAPHIC DESIGN
-    // ============================================================
 
     {
       id: 5,
+      title: "Pattern Design",
+      subtitle:
+        "Selected visual design work exploring branding, composition, typography, and visual communication",
+      category: "Graphic Design",
+      link: "/projects/patterndesign",
+      image: "https://cdn.dribbble.com/userupload/44337207/file/422000aa8a8d691921b97f44721a8927.png?resize=1600x1787&vertical=center",
+      gridClass: "md:col-span-7 h-[420px]",
+    },
+
+    {
+      id: 6,
       title: "Graphic Design Project",
       subtitle:
         "Selected visual design work exploring branding, composition, typography, and visual communication",
       category: "Graphic Design",
-      link: "#",
-      image: "YOUR_GRAPHIC_DESIGN_IMAGE_URL",
-      gridClass: "md:col-span-7 h-[420px]",
+      link: "https://dribbble.com/shots/26349628-Poster-Design-Beach-Party-Invite",
+      image: "https://cdn.dribbble.com/userupload/44336711/file/76817135354b9745b040e2be5e553b2a.jpg?resize=1600x2262&vertical=center",
+      gridClass: "md:col-span-5 h-[420px]",
     },
 
-    // ============================================================
     // MOTION GRAPHICS
-    // ============================================================
-
+    
     {
-      id: 6,
-      title: "Motion Study 01",
-      subtitle: "Motion design exploration",
+      id:7,
+      title: "Fanta Advert",
+      subtitle: "Motion Graphics exploration and animation",
       category: "Motion Graphics",
-      link: "YOUR_GOOGLE_DRIVE_LINK",
-      image: "/images/motion-01-thumbnail.jpg",
+      link: "https://drive.google.com/file/d/1dcbbPhplRpVvv_zeKUanH_4mddrFqa0f/view?usp=sharing",
+      image: "/images/MG1.png",
       motionPosition: "left",
     },
 
     {
-      id: 7,
-      title: "Motion Study 02",
-      subtitle: "Visual storytelling through motion",
+      id: 8,
+      title: "Lays Advert",
+      subtitle: "Motion Graphics exploration and animation",
       category: "Motion Graphics",
-      link: "YOUR_GOOGLE_DRIVE_LINK",
-      image: "/images/motion-02-thumbnail.jpg",
+      link: "https://drive.google.com/file/d/1l8JP0aWcb9-AKQQ0VleRikbs-XMPsB-Q/view?usp=sharing",
+      image: "/images/MG2.png",
       motionPosition: "top",
     },
 
     {
       id: 9,
-      title: "Motion Study 03",
-      subtitle: "Animation and visual exploration",
+      title: "Food Delivery App Loading Animation",
+      subtitle: "Motion Graphics exploration and animation",
       category: "Motion Graphics",
-      link: "YOUR_GOOGLE_DRIVE_LINK",
-      image: "/images/motion-03-thumbnail.jpg",
+      link: "https://drive.google.com/file/d/1GY1qiAEMFJHGY7mZL2qo3GnHN6tw8qF8/view?usp=sharing",
+      image: "/images/MG3.png",
       motionPosition: "bottom",
     },
 
     {
       id: 10,
-      title: "Motion Study 04",
-      subtitle: "Experimental motion graphics",
+      title: "Fanta Advert 2.0",
+      subtitle: "Motion Graphics exploration and animation",
       category: "Motion Graphics",
-      link: "YOUR_GOOGLE_DRIVE_LINK",
-      image: "/images/motion-04-thumbnail.jpg",
+      link: "https://drive.google.com/file/d/1qBIEyzF1EA_cQ4CglmwAVzZajKqFLEBw/view?usp=sharing",
+      image: "/images/MG4.png",
       motionPosition: "right",
     },
 
-    // ============================================================
     // OTHERS
-    // ============================================================
 
     {
-      id: 8,
-      title: "Other Work",
+      id: 11,
+      title: "2D Game Design",
       subtitle:
-        "Experiments, explorations, and projects outside of my primary design work",
+        "2D Game Design using Unity and C# for a simple platformer game",
       category: "Others",
-      link: "#",
-      image: "YOUR_OTHER_PROJECT_IMAGE_URL",
-      gridClass: "md:col-span-5 h-[360px]",
+      link: "/projects/PlanetPirate",
+      image: "https://cdn.dribbble.com/userupload/49286339/file/6434eff9d5d3d0906bcf82b614b0629d.png?resize=3810x2143&vertical=center",
+      gridClass: "md:col-span-7 h-[360px]",
     },
   ];
 
@@ -173,9 +176,7 @@ export const ProjectsSection = () => {
       className="relative w-full max-w-[1500px] mx-auto px-6 md:px-8 py-24 overflow-hidden"
     >
       
-      {/* ============================================================
-          SECTION HEADING
-          ============================================================ */}
+      {/* SECTION HEADING */}
 
       <motion.div
         initial={{ opacity: 0, y: 50 }}
@@ -195,9 +196,7 @@ export const ProjectsSection = () => {
         </p>
       </motion.div>
 
-      {/* ============================================================
-          FILTER
-          ============================================================ */}
+      {/* FILTER */}
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -245,9 +244,7 @@ export const ProjectsSection = () => {
         })}
       </motion.div>
 
-      {/* ============================================================
-          MOTION GRAPHICS — SPECIAL BENTO LAYOUT
-          ============================================================ */}
+      {/* MOTION GRAPHICS — SPECIAL BENTO LAYOUT */}
 
       {isMotionGraphics ? (
         <div className="relative z-10 w-full flex justify-center">
@@ -513,9 +510,7 @@ export const ProjectsSection = () => {
 
         </div>
       ) : (
-        /* ============================================================
-           NORMAL BENTO GRID FOR OTHER CATEGORIES
-           ============================================================ */
+        /*  NORMAL BENTO GRID FOR OTHER CATEGORIES */
 
         <motion.div
           layout
@@ -690,9 +685,7 @@ export const ProjectsSection = () => {
         </motion.div>
       )}
 
-      {/* ============================================================
-          EMPTY STATE
-          ============================================================ */}
+      {/* EMPTY STATE */}
 
       {filteredProjects.length === 0 && (
         <motion.div

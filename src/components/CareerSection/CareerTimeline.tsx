@@ -1,95 +1,110 @@
-import { Briefcase, Layers, Globe } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
-const careerEvents = [
+type Experience = {
+  company: string;
+  period: string;
+  role: string;
+  summary: string;
+  tags: string[];
+};
+
+const experiences: Experience[] = [
   {
-    period: "May 2025 – August 2026",
-    title: "UI/UX Designer",
     company: "Angika Technology",
-    icon: Globe,
-    points: [
-      "Designed user flows, wireframes, prototypes and high-fidelity interfaces for web and mobile apps.",
-      "Worked with stakeholders and developers to keep implementation true to the design.",
-      "Ran user research and usability evaluations.",
-      "Contributed to the design system and kept visuals consistent across products.",
-    ],
+    period: "May 2025 - August 2026",
+    role: "UI/UX Designer",
+    summary: "Web and mobile flows, prototypes and design system work.",
+    tags: ["UI/UX", "Design System"],
   },
+
   {
-    period: "June 2024 – November 2024",
-    title: "Junior UX Designer",
     company: "Gizmo Plugs",
-    icon: Layers,
-    points: [
-      "Supported UX research, user journey mapping and usability testing.",
-      "Built wireframes and interactive prototypes in Figma.",
-      "Partnered with senior designers to improve usability and accessibility through iteration.",
-    ],
+    period: "June 2024 - November 2024",
+    role: "Junior UX Designer",
+    summary: "User research, journey mapping and Figma prototypes.",
+    tags: ["UX Research", "Prototyping"],
   },
+
   {
-    period: "April 2020 – May 2021",
-    title: "Freelance Designer",
     company: "Self-Employed",
-    icon: Briefcase,
-    points: [
-      "Delivered UI, branding and digital design for independent clients.",
-      "Managed projects from requirement gathering to final delivery.",
-      "Created responsive interfaces and visual assets tailored to each client's goals.",
-    ],
+    period: "April 2020 - May 2021",
+    role: "Freelance Designer",
+    summary: "UI, branding and digital design for independent clients.",
+    tags: ["UI/UX", "Branding"],
   },
 ];
 
 export const CareerTimeline = () => {
   return (
-    <section id="career" className="mx-auto w-full max-w-3xl px-4 py-12 md:py-16">
-      <header className="mb-8">
-        <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
-          Career Journey
-        </h2>
-        <p className="mt-1 text-sm text-muted-foreground md:text-base">
-          Where I've worked and what I did there.
-        </p>
+    <section id="career" className="mx-auto w-full max-w-5xl px-4 py-12 md:py-20">
+      {/* Header */}
+      <header className="grid gap-6 md:grid-cols-2 md:gap-12">
+        <div>
+          <span className="inline-flex items-center gap-2 text-sm text-foreground">
+            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-foreground" />
+            Experiences
+          </span>
+          <h2 className="mt-4 text-2xl font-bold tracking-tight md:text-3xl">
+            Career{" "}
+            <span className="relative isolate inline-block">
+              <span className="bg-gradient-to-r from-[#9b8cf8] to-[#4db6ff] bg-clip-text text-transparent">
+                Journey
+              </span>
+            </span>
+          </h2>
+        </div>
+
+        <div className="md:pt-1">
+          <p className="max-w-md text-sm text-muted-foreground md:text-base">
+            Where I've worked and what I did there.
+          </p>
+          <a
+            href="#contact"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm text-foreground underline underline-offset-4 decoration-foreground/60 hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            Get in Contact
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+        </div>
       </header>
 
-      <ol className="relative space-y-8">
-        {/* vertical rail */}
-        <span
-          aria-hidden="true"
-          className="absolute left-4 top-2 bottom-2 w-px bg-border"
-        />
-
-        {careerEvents.map(({ period, title, company, icon: Icon, points }) => (
-          <li key={`${company}-${period}`} className="relative pl-12">
-            {/* node */}
-            <span className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full border border-primary/40 bg-background">
-              <Icon className="h-4 w-4 text-primary" />
-            </span>
-
-            <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+      {/* Rows */}
+      <ul className="mt-12 md:mt-16">
+        {experiences.map(({ company, period, role, summary, tags }) => (
+          <li
+            key={`${company}-${period}`}
+            className="group grid gap-4 border-b border-border py-7 first:border-t-0 last:border-b-0 md:grid-cols-[1.3fr_1fr_auto] md:items-center md:gap-8"
+          >
+            {/* Company + period */}
+            <div>
               <h3 className="text-lg font-semibold leading-snug">
-                {title}
-                <span className="font-normal text-muted-foreground">
-                  {" "}
-                  at {company}
-                </span>
+                {company}
               </h3>
-              <time className="shrink-0 text-sm text-muted-foreground">
-                {period}
-              </time>
+              <p className="mt-1.5 flex items-center gap-2 text-sm text-muted-foreground">
+                <span aria-hidden="true">•</span>
+                <time>{period}</time>
+              </p>
             </div>
 
-            <ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-muted-foreground md:text-[0.95rem]">
-              {points.map((point) => (
-                <li key={point} className="flex gap-2">
-                  <span
-                    aria-hidden="true"
-                    className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary"
-                  />
-                  <span>{point}</span>
+            {/* Role + summary */}
+            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground md:text-[0.95rem]">
+              {role}. {summary}
+            </p>
+
+            {/* Tags */}
+            <ul className="flex flex-wrap gap-2 md:justify-end">
+              {tags.map((tag) => (
+                <li
+                  key={tag}
+                  className="rounded-full bg-muted px-3.5 py-1.5 text-sm text-foreground transition-colors group-hover:bg-foreground group-hover:text-background"
+                >
+                  {tag}
                 </li>
               ))}
             </ul>
           </li>
         ))}
-      </ol>
+      </ul>
     </section>
   );
 };
