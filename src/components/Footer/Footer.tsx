@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Github, Linkedin, Twitter, Mail, ArrowUp, Coffee } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowUp, Coffee, Dribbble } from "lucide-react";
 import { MorphingText } from "../lightswind/morphing-text";
 
 export const Footer = () => {
@@ -25,9 +25,9 @@ export const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Github, href: "#", label: "GitHub" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
+    { icon: Dribbble, href: "https://dribbble.com/Prateesh-M-M", label: "Dribbble" },
+    { icon: Github, href: "https://github.com/Prateesh-M-M", label: "GitHub" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/prateesh-m-m-2147b0302", label: "LinkedIn" },
     { icon: Mail, href: "mailto:workwithprateesh@gmail.com", label: "Email" },
   ];
 

@@ -9,7 +9,7 @@ import { DotPattern } from "../lightswind/dot-pattern";
 import { useLenis } from "lenis/react";
 
 const RESUME_PATH = "/Prateesh_Resume.pdf";
-const RESUME_FILENAME = "Prateesh_Resume.pdf"; // name the visitor gets when it downloads
+const RESUME_FILENAME = "Prateesh_Resume.pdf";
 
 const handleResumeDownload = () => {
   const link = document.createElement("a");
