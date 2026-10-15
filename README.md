@@ -29,6 +29,19 @@ I am particularly interested in the intersection of:
 
 The portfolio is designed to show not only the final interface, but also the reasoning and process behind the design decisions.
 
+---
+
+## Contact
+
+For collaborations, internships, freelance opportunities, or design-related discussions:
+
+**LinkedIn:** https://linkedin.com/in/prateesh-m-m-2147b0302
+
+**Email:** [workwithprateesh@gmail.com](mailto:workwithprateesh@gmail.com)
+
+---
+
+
 ## Getting Started
 
 ### Prerequisites
@@ -151,16 +164,6 @@ Planned improvements may include:
 * More advanced project filtering
 * Expanded documentation of design systems
 * Additional AR/VR and AI-related projects
-
----
-
-## Contact
-
-For collaborations, internships, freelance opportunities, or design-related discussions:
-
-**LinkedIn:** https://linkedin.com/in/prateesh-m-m-2147b0302
-
-**Email:** [workwithprateesh@gmail.com](mailto:workwithprateesh@gmail.com)
 
 ---
 
