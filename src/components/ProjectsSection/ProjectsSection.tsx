@@ -159,7 +159,7 @@ export const ProjectsSection = () => {
         "2D Game Design using Unity and C# for a simple platformer game",
       category: "Others",
       link: "/projects/PlanetPirate",
-      image: "https://cdn.dribbble.com/userupload/49286339/file/6434eff9d5d3d0906bcf82b614b0629d.png?resize=3810x2143&vertical=center",
+      image: "https://cdn.dribbble.com/userupload/49286339/file/3515b206f5cba2c54fdc32b07d5640a8.png?resize=1504x846&vertical=center",
       gridClass: "md:col-span-7 h-[360px]",
     },
   ];
